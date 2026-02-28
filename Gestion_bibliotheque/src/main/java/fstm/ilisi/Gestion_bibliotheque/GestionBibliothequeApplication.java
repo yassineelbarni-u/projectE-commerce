@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import fstm.ilisi.Gestion_bibliotheque.entity.Produit;
 import fstm.ilisi.Gestion_bibliotheque.repository.ProduitRepository;
+import fstm.ilisi.Gestion_bibliotheque.service.AccountService;
 
 @SpringBootApplication
 public class GestionBibliothequeApplication implements CommandLineRunner {
@@ -27,4 +29,21 @@ public class GestionBibliothequeApplication implements CommandLineRunner {
 		// produitRepository.save(new Produit(null, "Tablette iPad", "Electronique", "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0", "Tablette 10 pouces, 64GB", 449.99, 8));
 	}
 
+	@Bean
+
+	CommandLineRunner CommandeLineRunnerDetails(AccountService accountService) { 
+		return args -> {
+			accountService.AddRole("USER");
+			accountService.AddRole("ADMIN");
+			accountService.AddUser("user1", "1234", "user1@gmail.com", "1234");
+			accountService.AddUser("user2", "1234", "user2@gmail.com", "1234");
+			accountService.AddUser("admin", "1234", "admin@gmail.com", "1234");
+
+			accountService.AddRoleToUser("user1", "USER");
+			accountService.AddRoleToUser("user2", "USER");
+			accountService.AddRoleToUser("admin", "USER");
+			accountService.AddRoleToUser("admin", "ADMIN");
+
+		};
+	}
 }

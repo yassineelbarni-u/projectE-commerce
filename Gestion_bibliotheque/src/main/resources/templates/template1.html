@@ -8,24 +8,24 @@
 
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/index}">📚 Gestion Bibliothèque</a>
+        <a class="navbar-brand" th:href="@{/index}"> Gestion Produit</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/index}">📖 Produits</a>
+                    <a class="nav-link" th:href="@{/index}"> Produits</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link" th:href="@{/addProduit}">➕ Ajouter Produit</a>
+                    <a class="nav-link" th:href="@{/addProduit}"> Ajouter Produit</a>
                 </li>
             </ul>
             
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                        👤 <span sec:authentication="name">Utilisateur</span>
+                         <span sec:authentication="name">Utilisateur</span>
                         <span sec:authorize="hasRole('ADMIN')" class="badge bg-warning text-dark">ADMIN</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
