@@ -19,6 +19,7 @@ public class GestionBibliothequeApplication {
 		return args -> {
 			// Créer les rôles uniquement s'ils n'existent pas
 			accountService.ensureRoleExists("USER");
+			accountService.ensureRoleExists("CLIENT");
 			accountService.ensureRoleExists("ADMIN");
 			
 			// Créer l'utilisateur admin uniquement s'il n'existe pas

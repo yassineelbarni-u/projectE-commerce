@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 public class ProduitServiceImpl implements ProduitService {
 
     private final ProduitRepository produitRepository;
+    
 
     @Override
     public Page<Produit> searchProduits(String search, int page, int size) {
@@ -23,33 +24,39 @@ public class ProduitServiceImpl implements ProduitService {
     }
 
     @Override
+    public Page<Produit> searchProduitsPublic(String search, Long categorieId, int page, int size) {
+        String normalizedSearch = search == null ? "" : search.trim();
+        return produitRepository.searchProduitsPublic(normalizedSearch, categorieId, PageRequest.of(page, size));
+    }
+
+    @Override
     public Produit getProduitById(Long id) {
         return produitRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Produit non trouve avec id: " + id));
     }
 
     @Override
     public Produit saveProduit(Produit produit) {
         // Validation de base
         if (produit.getNom() == null || produit.getNom().trim().isEmpty()) {
-            throw new RuntimeException("Le nom du produit ne peut pas être vide");
+            throw new RuntimeException("Le nom du produit ne peut pas etre vide");
         }
-        
+
         if (produit.getPrix() < 0) {
-            throw new RuntimeException("Le prix ne peut pas être négatif");
+            throw new RuntimeException("Le prix ne peut pas être negatif");
         }
         
         if (produit.getStock() < 0) {
-            throw new RuntimeException("Le stock ne peut pas être négatif");
+            throw new RuntimeException("Le stock ne peut pas etre negatif");
         }
-        
+
         return produitRepository.save(produit);
     }
 
     @Override
     public void deleteProduit(Long id) {
         if (!produitRepository.existsById(id)) {
-            throw new RuntimeException("Produit non trouvé avec l'ID: " + id);
+            throw new RuntimeException("Produit non trouve avec l'ID: " + id);
         }
         produitRepository.deleteById(id);
     }

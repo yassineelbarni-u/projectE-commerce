@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail Produit</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/public.css}" />
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+    <div th:insert="~{template1 :: navbar}"></div>
+
+    <div class="container py-5">
+        <a th:href="@{/produits}" class="back-link">← Retour au catalogue</a>
+
+        <div class="detail-shell mt-3">
+            <div class="detail-media">
+                <img th:if="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}"
+                     th:src="${produit.imageUrl}"
+                     th:alt="${produit.nom}">
+                <div th:unless="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}" class="product-card-placeholder detail-placeholder">
+                    Aucun visuel pour ce produit
+                </div>
+            </div>
+            <div class="detail-content">
+                <span class="badge rounded-pill text-bg-light mb-3" th:text="${produit.categorie != null ? produit.categorie.nom : 'Sans catégorie'}"></span>
+                <h1 th:text="${produit.nom}"></h1>
+                <p class="detail-description" th:text="${produit.description != null and !produit.description.isEmpty() ? produit.description : 'Aucune description disponible.'}"></p>
+
+                <div class="detail-stats">
+                    <div>
+                        <span class="detail-label">Prix</span>
+                        <strong th:text="${#numbers.formatDecimal(produit.prix, 1, 2)} + ' €'"></strong>
+                    </div>
+                    <div>
+                        <span class="detail-label">Stock</span>
+                        <strong th:text="${produit.stock}"></strong>
+                    </div>
+                </div>
+
+                <div class="detail-callout">
+                    <h3>Devenir client</h3>
+                    <p>Inscrivez-vous pour préparer la future partie client authentifiée et accéder ensuite à vos fonctionnalités dédiées.</p>
+                    <a th:href="@{/register}" class="btn btn-dark">Créer un compte</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

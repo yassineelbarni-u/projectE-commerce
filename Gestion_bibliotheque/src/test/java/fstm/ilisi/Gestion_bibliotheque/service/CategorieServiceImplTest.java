@@ -37,7 +37,6 @@ class CategorieServiceImplTest {
         categorie2 = new Categorie(2L, "Informatique");
     }
 
-    // ==================== Tests getAllCategories ====================
 
     @Test
     @DisplayName("getAllCategories - Retourne toutes les catégories")
@@ -62,7 +61,6 @@ class CategorieServiceImplTest {
         assertTrue(result.isEmpty());
     }
 
-    // ==================== Tests getCategorieById ====================
 
     @Test
     @DisplayName("getCategorieById - Retourne la catégorie trouvée")
@@ -87,7 +85,6 @@ class CategorieServiceImplTest {
         assertTrue(exception.getMessage().contains("Catégorie non trouvée"));
     }
 
-    // ==================== Tests saveCategorie ====================
 
     @Test
     @DisplayName("saveCategorie - Sauvegarde réussie d'une nouvelle catégorie")
@@ -154,7 +151,6 @@ class CategorieServiceImplTest {
         verify(categorieRepository).save(updated);
     }
 
-    // ==================== Tests deleteCategorie ====================
 
     @Test
     @DisplayName("deleteCategorie - Suppression réussie")
@@ -179,7 +175,6 @@ class CategorieServiceImplTest {
         verify(categorieRepository, never()).deleteById(any());
     }
 
-    // ==================== Tests categorieExists ====================
 
     @Test
     @DisplayName("categorieExists - Retourne true si la catégorie existe")

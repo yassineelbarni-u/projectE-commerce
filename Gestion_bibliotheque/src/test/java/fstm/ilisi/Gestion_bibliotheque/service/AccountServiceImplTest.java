@@ -55,7 +55,6 @@ class AccountServiceImplTest {
                 .build();
     }
 
-    // ==================== Tests AddUser ====================
 
     @Test
     @DisplayName("AddUser - Création réussie d'un utilisateur")
@@ -97,7 +96,6 @@ class AccountServiceImplTest {
         verify(appUserRepository, never()).save(any());
     }
 
-    // ==================== Tests AddRole ====================
 
     @Test
     @DisplayName("AddRole - Création réussie d'un rôle")
@@ -124,7 +122,6 @@ class AccountServiceImplTest {
         verify(appRoleRepository, never()).save(any());
     }
 
-    // ==================== Tests ensureRoleExists ====================
 
     @Test
     @DisplayName("ensureRoleExists - Crée le rôle s'il n'existe pas")
@@ -150,7 +147,6 @@ class AccountServiceImplTest {
         verify(appRoleRepository, never()).save(any());
     }
 
-    // ==================== Tests ensureUserExists ====================
 
     @Test
     @DisplayName("ensureUserExists - Crée l'utilisateur s'il n'existe pas")
@@ -177,7 +173,6 @@ class AccountServiceImplTest {
         verify(appUserRepository, never()).save(any());
     }
 
-    // ==================== Tests AddRoleToUser ====================
 
     @Test
     @DisplayName("AddRoleToUser - Ajout réussi d'un rôle à un utilisateur")
@@ -213,7 +208,6 @@ class AccountServiceImplTest {
         assertEquals("User not found", exception.getMessage());
     }
 
-    // ==================== Tests removeRoleFromUser ====================
 
     @Test
     @DisplayName("removeRoleFromUser - Suppression réussie d'un rôle")
@@ -238,7 +232,6 @@ class AccountServiceImplTest {
         assertEquals("User not found", exception.getMessage());
     }
 
-    // ==================== Tests loadUserByUsername ====================
 
     @Test
     @DisplayName("loadUserByUsername - Retourne l'utilisateur trouvé")

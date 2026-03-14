@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion espace administrateur</title>
+    <title>Connexion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/login.css}" />
 </head>
@@ -12,7 +12,7 @@
         <div class="login-card">
             <div class="login-header">
                 <h2>🔐 Login</h2>
-                <p>Connectez-vous pour accéder à l'espace admin</p>
+                <p>Connectez-vous pour accéder à votre espace</p>
             </div>
 
             <!-- Message d'erreur -->
@@ -23,6 +23,10 @@
             <!-- Message de déconnexion -->
             <div th:if="${param.logout}" class="alert alert-success" role="alert">
                 <strong>Déconnecté!</strong> Vous avez été déconnecté avec succès.
+            </div>
+
+            <div th:if="${param.registered}" class="alert alert-success" role="alert">
+                <strong>Inscription réussie!</strong> Vous pouvez maintenant vous connecter.
             </div>
 
             <!-- Formulaire de connexion -->
@@ -45,7 +49,8 @@
             </form>
 
             <div class="text-center mt-3">
-                <small class="text-muted">Utilisateur par défaut: admin (mot de passe: 1234)</small>
+                <small class="text-muted d-block">Utilisateur admin par défaut: admin (mot de passe: 1234)</small>
+                <a th:href="@{/register}" class="text-decoration-none">Créer un compte client</a>
             </div>
         </div>
     </div>

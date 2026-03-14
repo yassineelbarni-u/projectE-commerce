@@ -45,7 +45,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    @DisplayName("loadUserByUsername - Retourne les détails de l'utilisateur")
+    @DisplayName("loadUserByUsername - Retourne les details de l'utilisateur")
     void testLoadUserByUsername_Success() {
         when(accountService.loadUserByUsername("testuser")).thenReturn(testUser);
 
@@ -54,7 +54,7 @@ class UserDetailsServiceImplTest {
         assertNotNull(result);
         assertEquals("testuser", result.getUsername());
         assertEquals("encodedPassword", result.getPassword());
-        // Spring Security ajoute le préfixe ROLE_
+        // Spring Security ajoute le préfixe ROLE
         assertTrue(result.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
         assertTrue(result.getAuthorities().stream()

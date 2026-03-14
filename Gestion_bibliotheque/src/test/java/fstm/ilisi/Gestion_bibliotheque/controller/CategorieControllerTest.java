@@ -47,7 +47,6 @@ class CategorieControllerTest {
         categorie2 = new Categorie(2L, "Informatique");
     }
 
-    // ==================== Tests index ====================
 
     @Test
     @DisplayName("Test index - Liste des catégories")
@@ -72,7 +71,6 @@ class CategorieControllerTest {
                 .andExpect(view().name("categorie/ListeCategorie"));
     }
 
-    // ==================== Tests showAddForm ====================
 
     @Test
     @DisplayName("Test showAddForm - Affiche le formulaire d'ajout")
@@ -91,7 +89,6 @@ class CategorieControllerTest {
                 .andExpect(view().name("categorie/ajouterCategorie"));
     }
 
-    // ==================== Tests addCategorie ====================
 
     @Test
     @DisplayName("Test addCategorie - Ajout réussi")
@@ -117,7 +114,6 @@ class CategorieControllerTest {
         assertTrue(redirect.startsWith("redirect:/admin/categories/add?error="));
     }
 
-    // ==================== Tests showEditForm ====================
 
     @Test
     @DisplayName("Test showEditForm - Affiche le formulaire d'édition")
@@ -140,7 +136,6 @@ class CategorieControllerTest {
                 .andExpect(view().name("categorie/editCategorie"));
     }
 
-    // ==================== Tests editCategorie ====================
 
     @Test
     @DisplayName("Test editCategorie - Modification réussie")
@@ -155,7 +150,7 @@ class CategorieControllerTest {
     }
 
     @Test
-    @DisplayName("Test editCategorie - Échec avec erreur")
+    @DisplayName("Test editCategorie - Echec avec erreur")
     void testEditCategorie_Error() {
         Categorie invalid = new Categorie(1L, "");
         when(categorieService.saveCategorie(invalid))
@@ -166,7 +161,7 @@ class CategorieControllerTest {
         assertTrue(redirect.contains("redirect:/admin/categories/edit?id=1"));
     }
 
-    // ==================== Tests deleteCategorie ====================
+    // ====== Tests deleteCategorie ========
 
     @Test
     @DisplayName("Test deleteCategorie - Suppression réussie")

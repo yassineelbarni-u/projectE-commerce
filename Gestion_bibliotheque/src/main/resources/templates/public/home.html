@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue Produits</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/public.css}" />
+    <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+    <div th:insert="~{template1 :: navbar}"></div>
+
+    <section class="hero-section">
+        <div class="container py-5">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <span class="hero-kicker">Catalogue public</span>
+                    <h1 class="hero-title">Découvrez les produits disponibles avant de devenir client.</h1>
+                    <p class="hero-text">Recherchez, filtrez par catégorie et consultez chaque fiche produit depuis l'accueil du site.</p>
+                    <div class="hero-actions">
+                        <a th:href="@{/produits}" class="btn btn-dark btn-lg">Voir le catalogue</a>
+                        <a th:href="@{/register}" class="btn btn-outline-dark btn-lg" sec:authorize="isAnonymous()">Créer un compte client</a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="hero-panel">
+                        <div class="hero-panel-label">Navigation visiteur</div>
+                        <ul class="hero-panel-list">
+                            <li>Catalogue public accessible sans connexion</li>
+                            <li>Recherche textuelle sur nom, description et catégorie</li>
+                            <li>Filtre rapide par catégorie</li>
+                            <li>Inscription prête pour la future partie client</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="catalog-section pb-5">
+        <div class="container">
+            <div class="catalog-toolbar">
+                <form method="get" th:action="@{/produits}" class="row g-3 align-items-end">
+                    <div class="col-lg-5">
+                        <label for="search" class="form-label">Recherche</label>
+                        <input id="search" type="text" name="search" th:value="${search}" class="form-control" placeholder="Nom, description, catégorie...">
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="categorieId" class="form-label">Catégorie</label>
+                        <select id="categorieId" name="categorieId" class="form-select">
+                            <option value="">Toutes les catégories</option>
+                            <option th:each="cat : ${categories}"
+                                    th:value="${cat.id}"
+                                    th:text="${cat.nom}"
+                                    th:selected="${selectedCategorieId != null and selectedCategorieId == cat.id}"></option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Filtrer</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row g-4 mt-1" th:if="${!#lists.isEmpty(ListeProduit)}">
+                <div class="col-md-6 col-xl-3" th:each="produit : ${ListeProduit}">
+                    <article class="product-card h-100">
+                        <div class="product-card-media">
+                            <img th:if="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}"
+                                 th:src="${produit.imageUrl}"
+                                 th:alt="${produit.nom}">
+                            <div th:unless="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}" class="product-card-placeholder">
+                                Visuel indisponible
+                            </div>
+                        </div>
+                        <div class="product-card-body">
+                            <div class="product-card-meta">
+                                <span class="badge rounded-pill text-bg-light" th:text="${produit.categorie != null ? produit.categorie.nom : 'Sans catégorie'}"></span>
+                                <span class="stock-pill" th:classappend="${produit.stock > 0 ? 'stock-pill-ok' : 'stock-pill-low'}"
+                                      th:text="${produit.stock > 0 ? 'En stock: ' + produit.stock : 'Rupture'}"></span>
+                            </div>
+                            <h2 th:text="${produit.nom}"></h2>
+                            <p th:text="${produit.description != null and !produit.description.isEmpty() ? produit.description : 'Aucune description disponible.'}"></p>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="product-price" th:text="${#numbers.formatDecimal(produit.prix, 1, 2)} + ' €'"></span>
+                            <a class="btn btn-outline-dark" th:href="@{/produits/detail(id=${produit.id})}">Voir détail</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${#lists.isEmpty(ListeProduit)}">
+                <h3>Aucun produit trouvé</h3>
+                <p>Essayez une autre recherche ou retirez le filtre de catégorie.</p>
+                <a th:href="@{/produits}" class="btn btn-dark">Réinitialiser</a>
+            </div>
+
+            <nav aria-label="Pagination catalogue" th:if="${pages != null and pages.length > 1}" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <li th:each="pageRef,status : ${pages}" class="page-item">
+                        <a th:class="${status.index == currentPage ? 'page-link active' : 'page-link'}"
+                           th:href="@{/produits(page=${status.index}, search=${search}, categorieId=${selectedCategorieId})}"
+                           th:text="${status.index + 1}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+</body>
+</html>

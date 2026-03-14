@@ -35,7 +35,8 @@ public class ProduitController {
     
     // Chemin pour stocker les images uploadées
     private static final String UPLOAD_DIR = "src/main/resources/static/uploads/";
-
+    
+    // Afficher la liste des produits avec pagination et recherche
     @GetMapping
     public String index(Model model,
       @RequestParam(name = "page", defaultValue = "0") int page,
@@ -61,7 +62,8 @@ public class ProduitController {
             return "redirect:/admin/produits?page=" + page + "&search=" + search + "&error=" + e.getMessage();
         }
     }
-
+    
+    // Afficher le formulaire d'édition d'un produit
     @GetMapping("/edit")
     public String showEditForm(@RequestParam(name = "id") Long id,
                                @RequestParam(name = "search", defaultValue = "") String search,
@@ -74,7 +76,8 @@ public class ProduitController {
         model.addAttribute("search", search);
         return "produit/editProduit";
     }
-
+    
+    // methode pour sauvegarder la modification d'un produit
     @PostMapping("/edit")
     public String saveProduit(@ModelAttribute Produit produit,
                             @RequestParam(name = "categorieId", required = false) Long categorieId,
@@ -84,6 +87,8 @@ public class ProduitController {
         // Associer la catégorie au produit
         if (categorieId != null) {
             Categorie categorie = categorieService.getCategorieById(categorieId);
+
+            // Associer la categorie au produit
             produit.setCategorie(categorie);
         }
         
@@ -135,7 +140,6 @@ public class ProduitController {
                 produit.setImageUrl("/uploads/" + fileName);
             } catch (IOException e) {
                 e.printStackTrace();
-                // En cas d'erreur, on utilise l'URL fournie dans le formulaire
             }
         }
         

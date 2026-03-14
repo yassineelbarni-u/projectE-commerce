@@ -76,7 +76,6 @@ class UserControllerTest {
                 .build();
     }
 
-    // ==================== Tests dashboard ====================
 
     @Test
     @DisplayName("Test dashboard - Retourne la vue dashboard")
@@ -94,7 +93,6 @@ class UserControllerTest {
                 .andExpect(view().name("admin/dashboard"));
     }
 
-    // ==================== Tests listUsers ====================
 
     @Test
     @DisplayName("Test listUsers - Affiche la liste des utilisateurs")
@@ -118,7 +116,6 @@ class UserControllerTest {
                 .andExpect(view().name("admin/listeUsers"));
     }
 
-    // ==================== Tests showAddUserForm ====================
 
     @Test
     @DisplayName("Test showAddUserForm - Affiche le formulaire d'ajout")
@@ -132,7 +129,6 @@ class UserControllerTest {
         verify(model).addAttribute("roles", roles);
     }
 
-    // ==================== Tests addUser ====================
 
     @Test
     @DisplayName("Test addUser - Ajout réussi sans rôles")
@@ -172,7 +168,6 @@ class UserControllerTest {
         assertTrue(redirect.startsWith("redirect:/admin/users/add?error="));
     }
 
-    // ==================== Tests showEditUserForm ====================
 
     @Test
     @DisplayName("Test showEditUserForm - Affiche le formulaire d'édition")
@@ -196,7 +191,6 @@ class UserControllerTest {
                 () -> userController.showEditUserForm("unknown", model));
     }
 
-    // ==================== Tests editUser ====================
 
     @Test
     @DisplayName("Test editUser - Modification réussie sans mot de passe")
@@ -237,7 +231,6 @@ class UserControllerTest {
         assertTrue(redirect.startsWith("redirect:/admin/users?error="));
     }
 
-    // ==================== Tests deleteUser ====================
 
     @Test
     @DisplayName("Test deleteUser - Suppression réussie")

@@ -47,18 +47,19 @@ class ProduitControllerTest {
     // Mock du model pour verifier les attributs ajoutes
     @Mock
     private Model model;
-
+    
     @InjectMocks
     private ProduitController produitController;
 
     // MockMvc pour tester les endpoints HTTP
     private MockMvc mockMvc;
+
     private Produit produit1;
     private Produit produit2;
     private Categorie categorie1;
     private Categorie categorie2;
 
-    // Initialisation avant chaque test
+
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(produitController).build();
@@ -87,6 +88,7 @@ class ProduitControllerTest {
         produit2.setStock(5);
     }
 
+    
     @Test
     @DisplayName("Test index - Liste des produits")
     void testIndex() {
@@ -142,7 +144,7 @@ class ProduitControllerTest {
     @Test
     @DisplayName("Test saveProduit")
     void testSaveProduit() {
-        
+
         // Arrange
         when(categorieService.getCategorieById(1L)).thenReturn(categorie1);
         when(produitService.saveProduit(any(Produit.class))).thenReturn(produit1);

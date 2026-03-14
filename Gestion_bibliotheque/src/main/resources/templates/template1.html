@@ -8,14 +8,17 @@
 
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/admin/produits}">📚 Gestion Bibliothèque</a>
+        <a class="navbar-brand" th:href="@{/}">📚 Gestion Bibliothèque</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/produits}">📖 Produits</a>
+                    <a class="nav-link" th:href="@{/}">🏠 Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/produits}">📖 Produits</a>
                 </li>
                 
                 <!-- Menu Admin -->
@@ -34,10 +37,17 @@
             </ul>
             
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" th:href="@{/register}">📝 Inscription</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" th:href="@{/login}">🔐 Connexion</a>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                         👤 <span sec:authentication="name">Utilisateur</span>
                         <span sec:authorize="hasRole('ADMIN')" class="badge bg-warning text-dark">ADMIN</span>
+                        <span sec:authorize="hasRole('CLIENT') and !hasRole('ADMIN')" class="badge bg-info text-dark">CLIENT</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><span class="dropdown-item-text">Connecté en tant que: <strong sec:authentication="name">User</strong></span></li>

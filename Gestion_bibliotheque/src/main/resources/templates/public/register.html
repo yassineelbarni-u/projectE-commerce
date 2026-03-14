@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Client</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>📝 Inscription</h2>
+                <p>Créez votre compte client pour préparer la suite du projet.</p>
+            </div>
+
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                <strong>Erreur!</strong> <span th:text="${param.error}"></span>
+            </div>
+
+            <form th:action="@{/register}" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                           th:value="${param.username}" placeholder="Choisissez un nom d'utilisateur" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email"
+                           th:value="${param.email}" placeholder="nom@example.com" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                           placeholder="Entrez votre mot de passe" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                           placeholder="Confirmez votre mot de passe" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-login">Créer mon compte client</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a th:href="@{/}" class="text-decoration-none">Retour au catalogue</a>
+                <span class="mx-2">|</span>
+                <a th:href="@{/login}" class="text-decoration-none">Déjà inscrit ? Connexion</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
