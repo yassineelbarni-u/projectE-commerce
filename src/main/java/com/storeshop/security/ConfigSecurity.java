@@ -5,10 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import com.storeshop.service.UserDetailsServiceImpl;
+import com.storeshop.services.impl.UserDetailsServiceImpl;
+
 import lombok.AllArgsConstructor;
 
 @Configuration
@@ -17,7 +18,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ConfigSecurity {
 
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
