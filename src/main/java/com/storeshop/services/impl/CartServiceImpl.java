@@ -22,6 +22,7 @@ public class CartServiceImpl implements CartService {
 
   @Override
   public Cart getCart(HttpSession session) {
+    // read attribut from session, if null create new cart and save in session
     Cart cart = (Cart) session.getAttribute(CART_SESSION_KEY);
     if (cart == null) {
       cart = new Cart();
@@ -30,6 +31,7 @@ public class CartServiceImpl implements CartService {
     return cart;
   }
 
+  // add item to cart, if item already exists update quantity
   @Override
   public void addItem(HttpSession session, Long produitId, int quantity) {
     Cart cart = getCart(session);
@@ -58,19 +60,24 @@ public class CartServiceImpl implements CartService {
   public int getTotalQuantity(HttpSession session) {
     Cart cart = getCart(session);
     int total = 0;
+    // sum all quantities in the cart
     for (Integer quantity : cart.getItems().values()) {
       total += quantity;
     }
     return total;
   }
 
+// build cart lines with product details and line total
   @Override
   public List<CartLine> buildLines(Cart cart) {
     List<CartLine> lines = new ArrayList<>();
     for (Map.Entry<Long, Integer> entry : cart.getItems().entrySet()) {
       Produit produit = produitService.getProduitById(entry.getKey());
+      
       int quantity = entry.getValue();
-      double lineTotal = produit.getPrice() * quantity;
+      double price = produit.getPrice();
+
+      double lineTotal = price * quantity;
       lines.add(new CartLine(produit, quantity, lineTotal));
     }
     return lines;

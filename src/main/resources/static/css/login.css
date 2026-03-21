@@ -11,6 +11,8 @@ body {
 .login-shell {
     display: flex;
     min-height: 100vh;
+    justify-content: center;
+    align-items: center;
 }
 
 /*  LEFT IMAGE  */
@@ -18,6 +20,7 @@ body {
     flex: 0 0 50%;
     position: relative;
     overflow: hidden;
+    display: none;
 }
 
 .visual-img {
@@ -97,12 +100,13 @@ body {
 
 /* ===== RIGHT FORM ===== */
 .login-right {
-    width: 440px;
+    width: 100%;
+    max-width: 480px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 32px;
+    padding: 40px 24px;
     background: #f0f2f7;
 }
 
@@ -190,15 +194,37 @@ body {
     margin-top: 22px;
     padding-top: 18px;
     border-top: 1px solid #e8eaf0;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
 }
 .login-footer a {
     font-size: 13px;
     color: #4361ee;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
-.login-footer a:hover { text-decoration: underline; }
+.login-footer a:hover {
+    text-decoration: none;
+    background: rgba(67, 97, 238, 0.08);
+    border-color: rgba(67, 97, 238, 0.2);
+}
+
+.login-footer .btn-ghost-ink {
+    color: #1a202c;
+    border-color: #e8eaf0;
+    background: #f7f8fc;
+}
+.login-footer .btn-ghost-ink:hover {
+    background: #eceef6;
+    border-color: #d8dbe6;
+}
 
 /* Animations */
 @keyframes fadeUp {
@@ -211,6 +237,5 @@ body {
 }
 
 @media (max-width: 860px) {
-    .login-visual { display: none; }
     .login-right { width: 100%; min-height: 100vh; }
 }

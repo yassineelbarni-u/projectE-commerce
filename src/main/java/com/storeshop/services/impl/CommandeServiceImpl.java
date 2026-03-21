@@ -64,4 +64,19 @@ public class CommandeServiceImpl implements CommandeService {
   public List<Commande> listUserOrders(User user) {
     return commandeRepository.findByUserOrderByCreatedAtDesc(user);
   }
+
+  @Override
+  public List<Commande> listAllOrders() {
+    return commandeRepository.findAllByOrderByCreatedAtDesc();
+  }
+
+  @Override
+  public void updateStatus(Long commandeId, String status) {
+    Commande commande =
+        commandeRepository
+            .findById(commandeId)
+            .orElseThrow(() -> new RuntimeException("Commande introuvable"));
+    commande.setStatus(status);
+    commandeRepository.save(commande);
+  }
 }

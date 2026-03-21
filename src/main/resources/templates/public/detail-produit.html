@@ -13,7 +13,7 @@
 <!-- ===== NAVBAR ===== -->
 <nav class="pub-nav">
     <a th:href="@{/}" class="pub-nav-brand">
-        <div class="brand-dot">🛒</div>
+        <div class="brand-dot">SS</div>
         <span class="brand-name">StoreShop</span>
     </a>
     <ul class="pub-nav-links">
@@ -28,7 +28,7 @@
 
 <div style="padding: clamp(32px,4vw,60px) clamp(20px,5vw,60px);">
 
-    <a th:href="@{/produits}" class="detail-back">← Retour au catalogue</a>
+    <a th:href="@{/produits}" class="detail-back">Retour au catalogue</a>
 
     <div class="detail-shell">
 
@@ -36,8 +36,8 @@
         <div class="detail-media">
             <img th:if="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}"
                  th:src="${produit.imageUrl}" th:alt="${produit.name}">
-            <div th:unless="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}"
-                 class="detail-placeholder">📦</div>
+              <div th:unless="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}"
+                  class="detail-placeholder">Image</div>
         </div>
 
         <!-- Infos -->
@@ -67,7 +67,7 @@
             <div class="detail-callout" sec:authorize="isAnonymous()">
                 <h3>Intéressé par ce produit ?</h3>
                 <p>Créez un compte client pour accéder à toutes vos fonctionnalités dédiées.</p>
-                <a th:href="@{/register}" class="btn-ink">Créer un compte →</a>
+                <a th:href="@{/register}" class="btn-ink">Créer un compte</a>
             </div>
 
             <div class="detail-callout" sec:authorize="isAuthenticated()"
@@ -82,7 +82,7 @@
                         <button type="submit" class="btn-ink" th:disabled="${produit.stock <= 0}">Ajouter au panier</button>
                     </div>
                 </form>
-                <a th:href="@{/panier}" class="btn-ghost-ink">Voir mon panier →</a>
+                <a th:href="@{/panier}" class="btn-ghost-ink">Voir mon panier</a>
             </div>
         </div>
     </div>

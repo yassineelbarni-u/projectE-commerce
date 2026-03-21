@@ -10,4 +10,8 @@ public interface CommandeService {
   Commande createOrder(User user, Map<Long, Integer> items);
 
   List<Commande> listUserOrders(User user);
+
+  List<Commande> listAllOrders();
+
+  void updateStatus(Long commandeId, String status);
 }

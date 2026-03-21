@@ -21,14 +21,14 @@
                 </div>
             </div>
             <div class="topbar-actions">
-                <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/categories/add}" class="btn-primary-custom">＋ Ajouter</a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/categories/add}" class="btn-primary-custom">Ajouter</a>
             </div>
         </header>
         <main class="admin-content">
 
             <div th:if="${param.error}" class="alert-custom danger">
-                <span>⚠️</span><span th:text="${param.error[0]}"></span>
-                <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+                <span>Erreur:</span><span th:text="${param.error[0]}"></span>
+                <button class="alert-close" onclick="this.parentElement.remove()">Fermer</button>
             </div>
 
             <div class="page-header">
@@ -37,13 +37,13 @@
                     <p>Organisez les catégories de vos produits</p>
                 </div>
                 <div class="page-header-right">
-                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/categories/add}" class="btn-primary-custom">＋ Nouvelle catégorie</a>
-                    <a th:href="@{/admin/dashboard}" class="btn-ghost">← Dashboard</a>
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/categories/add}" class="btn-primary-custom">Nouvelle catégorie</a>
+                    <a th:href="@{/admin/dashboard}" class="btn-ghost">Dashboard</a>
                 </div>
             </div>
 
             <div class="panel">
-                <div class="panel-header"><h2>📂 Toutes les catégories</h2></div>
+                <div class="panel-header"><h2>Toutes les catégories</h2></div>
                 <div style="overflow-x:auto;">
                     <table class="admin-table">
                         <thead>
@@ -57,7 +57,7 @@
                                 <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#718096;" th:text="'#' + ${categorie.id}"></span></td>
                                 <td>
                                     <div style="display:flex;align-items:center;gap:10px;">
-                                        <div style="width:32px;height:32px;border-radius:8px;background:#fffbeb;border:1px solid #fde68a;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">📂</div>
+                                        <div style="width:32px;height:32px;border-radius:8px;background:#fffbeb;border:1px solid #fde68a;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;">Cat</div>
                                         <strong th:text="${categorie.nom}"></strong>
                                     </div>
                                 </td>
@@ -67,15 +67,15 @@
                                 </td>
                                 <td sec:authorize="hasRole('ADMIN')">
                                     <div style="display:flex;gap:6px;">
-                                        <a th:href="@{/admin/categories/edit(id=${categorie.id})}" class="btn-icon edit">✏️ Modifier</a>
+                                        <a th:href="@{/admin/categories/edit(id=${categorie.id})}" class="btn-icon edit">Modifier</a>
                                         <a onclick="return confirm('Supprimer cette catégorie ?')"
-                                           th:href="@{/admin/categories/delete(id=${categorie.id})}" class="btn-icon delete">🗑️ Supprimer</a>
+                                           th:href="@{/admin/categories/delete(id=${categorie.id})}" class="btn-icon delete">Supprimer</a>
                                     </div>
                                 </td>
                             </tr>
                             <tr th:if="${#lists.isEmpty(listeCategories)}">
                                 <td colspan="4" style="text-align:center;padding:32px;color:var(--text-muted);">
-                                    <div style="font-size:32px;margin-bottom:8px;">📂</div>
+                                    <div style="font-size:12px;margin-bottom:8px;">Aucune categorie</div>
                                     <p>Aucune catégorie disponible</p>
                                 </td>
                             </tr>

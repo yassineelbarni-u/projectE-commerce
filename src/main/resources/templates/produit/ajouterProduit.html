@@ -28,7 +28,7 @@
                     <p>Remplissez les informations pour créer un nouveau produit</p>
                 </div>
                 <div class="page-header-right">
-                    <a th:href="@{/admin/produits(search=${search})}" class="btn-ghost">← Retour</a>
+                    <a th:href="@{/admin/produits(search=${search})}" class="btn-ghost">Retour</a>
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
                     <!-- Colonne gauche -->
                     <div style="display:flex;flex-direction:column;gap:16px;">
                         <div class="panel">
-                            <div class="panel-header"><h2>📋 Informations générales</h2></div>
+                            <div class="panel-header"><h2>Informations générales</h2></div>
                             <div class="panel-body" style="display:flex;flex-direction:column;gap:14px;">
                                 <div>
                                     <label for="nom" class="form-label-custom">Nom du produit *</label>
@@ -50,7 +50,7 @@
                                         <option value="">-- Sélectionnez une catégorie --</option>
                                         <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.nom}"></option>
                                     </select>
-                                    <p class="form-hint"><a th:href="@{/admin/categories}" target="_blank" style="color:var(--accent);">＋ Gérer les catégories</a></p>
+                                    <p class="form-hint"><a th:href="@{/admin/categories}" target="_blank" style="color:var(--accent);">Gérer les catégories</a></p>
                                 </div>
                                 <div>
                                     <label for="description" class="form-label-custom">Description *</label>
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <div class="panel">
-                            <div class="panel-header"><h2>🖼️ Image du produit</h2></div>
+                            <div class="panel-header"><h2>Image du produit</h2></div>
                             <div class="panel-body" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
                                 <div>
                                     <label for="imageFile" class="form-label-custom">Uploader depuis le PC</label>
@@ -78,7 +78,7 @@
                     <!-- Colonne droite -->
                     <div style="display:flex;flex-direction:column;gap:16px;">
                         <div class="panel">
-                            <div class="panel-header"><h2>💰 Prix & Stock</h2></div>
+                            <div class="panel-header"><h2>Prix et stock</h2></div>
                             <div class="panel-body" style="display:flex;flex-direction:column;gap:14px;">
                                 <div>
                                     <label for="prix" class="form-label-custom">Prix (€) *</label>
@@ -92,7 +92,7 @@
                         </div>
                         <div class="panel">
                             <div class="panel-body" style="display:flex;flex-direction:column;gap:10px;">
-                                <button type="submit" class="btn-icon save" style="width:100%;justify-content:center;">✓ Ajouter le produit</button>
+                                <button type="submit" class="btn-icon save" style="width:100%;justify-content:center;">Ajouter le produit</button>
                                 <a th:href="@{/admin/produits(search=${search})}" class="btn-ghost" style="width:100%;text-align:center;">Annuler</a>
                             </div>
                         </div>

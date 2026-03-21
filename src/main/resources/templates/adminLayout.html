@@ -7,7 +7,7 @@
 <!-- ===== SIDEBAR FRAGMENT ===== -->
 <aside th:fragment="sidebar(activePage)" class="admin-sidebar">
     <div class="sidebar-brand">
-        <div class="brand-icon">🛒</div>
+        <div class="brand-icon"></div>
         <div>
             <div class="brand-text">StoreAdmin</div>
             <div class="brand-sub">Back Office</div>
@@ -27,23 +27,27 @@
         <div class="sidebar-section-label">Principal</div>
         <a th:href="@{/admin/dashboard}"
            th:class="${activePage == 'dashboard'} ? 'nav-item active' : 'nav-item'">
-            <span class="nav-icon">🏠</span> Tableau de bord
+            <span class="nav-icon"></span> Tableau de bord
         </a>
 
         <div class="sidebar-section-label">Catalogue</div>
         <a th:href="@{/admin/produits}"
            th:class="${activePage == 'produits'} ? 'nav-item active' : 'nav-item'">
-            <span class="nav-icon">📦</span> Produits
+            <span class="nav-icon"></span> Produits
         </a>
         <a th:href="@{/admin/categories}"
            th:class="${activePage == 'categories'} ? 'nav-item active' : 'nav-item'">
-            <span class="nav-icon">📂</span> Catégories
+            <span class="nav-icon"></span> Catégories
         </a>
 
         <div class="sidebar-section-label">Gestion</div>
         <a th:href="@{/admin/users}"
            th:class="${activePage == 'users'} ? 'nav-item active' : 'nav-item'">
-            <span class="nav-icon">👥</span> Utilisateurs
+            <span class="nav-icon"></span> Utilisateurs
+        </a>
+        <a th:href="@{/admin/commandes}"
+           th:class="${activePage == 'commandes'} ? 'nav-item active' : 'nav-item'">
+            <span class="nav-icon"></span> Commandes
         </a>
     </nav>
 
@@ -51,7 +55,7 @@
         <form th:action="@{/logout}" method="post" style="margin:0;">
             <button type="submit" class="nav-item"
                     style="width:100%;border:none;background:none;text-align:left;cursor:pointer;">
-                <span class="nav-icon">🔓</span> Déconnexion
+                <span class="nav-icon"></span> logout
             </button>
         </form>
     </div>

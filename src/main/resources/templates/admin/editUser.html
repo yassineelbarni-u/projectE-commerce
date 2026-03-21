@@ -28,12 +28,12 @@
                     <p>Mettre à jour les informations et les rôles du compte</p>
                 </div>
                 <div class="page-header-right">
-                    <a th:href="@{/admin/users}" class="btn-ghost">← Retour</a>
+                    <a th:href="@{/admin/users}" class="btn-ghost">Retour</a>
                 </div>
             </div>
 
             <div class="panel" style="max-width:680px;">
-                <div class="panel-header"><h2>✏️ Modification du compte</h2></div>
+                <div class="panel-header"><h2>Modification du compte</h2></div>
                 <div class="panel-body">
                     <form method="post" th:action="@{/admin/users/edit}">
                         <input type="hidden" name="userId" th:value="${user.userId}">
@@ -50,7 +50,7 @@
                         <div style="margin-bottom:20px;">
                             <label for="password" class="form-label-custom">Nouveau mot de passe</label>
                             <input type="password" class="form-control-custom" id="password" name="password" placeholder="Laisser vide pour conserver">
-                            <p class="form-hint">⚠️ Laissez vide pour conserver le mot de passe actuel.</p>
+                            <p class="form-hint">Laissez vide pour conserver le mot de passe actuel.</p>
                         </div>
                         <div style="margin-bottom:24px;">
                             <label class="form-label-custom">Rôles</label>
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         <div style="display:flex;gap:10px;">
-                            <button type="submit" class="btn-icon save">💾 Enregistrer</button>
+                            <button type="submit" class="btn-icon save">Enregistrer</button>
                             <a th:href="@{/admin/users}" class="btn-ghost">Annuler</a>
                         </div>
                     </form>

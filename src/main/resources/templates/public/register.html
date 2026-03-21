@@ -16,7 +16,7 @@
         <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&q=80&fit=crop" alt="" class="reg-img">
         <div class="reg-visual-content">
             <a th:href="@{/}" class="reg-brand">
-                <div class="rb-dot">🛒</div>
+                <div class="rb-dot">SS</div>
                 <div>
                     <div class="rb-name">StoreShop</div>
                     <div class="rb-sub">Espace client</div>
@@ -39,7 +39,7 @@
             </div>
 
             <div th:if="${param.error}" class="reg-alert">
-                <span>⚠️</span> <span th:text="${param.error}"></span>
+                <span>Erreur:</span> <span th:text="${param.error}"></span>
             </div>
 
             <form th:action="@{/register}" method="post">
@@ -69,7 +69,7 @@
                                placeholder="••••••••" required>
                     </div>
                 </div>
-                <button type="submit" class="reg-btn">Créer mon compte →</button>
+                <button type="submit" class="reg-btn">Créer mon compte</button>
             </form>
 
             <div class="reg-footer">

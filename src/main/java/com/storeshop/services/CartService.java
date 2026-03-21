@@ -4,7 +4,9 @@ import com.storeshop.models.Cart;
 import com.storeshop.models.CartLine;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-
+/*
+    * Service for managing the shopping cart stored in the user's session. It provides methods to add, update, remove items,
+ */
 public interface CartService {
 
   Cart getCart(HttpSession session);

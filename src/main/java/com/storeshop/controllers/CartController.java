@@ -22,6 +22,7 @@ public class CartController {
 
   @GetMapping
   public String viewCart(Model model, HttpSession session) {
+    // get cart from session and build lines to display in the view
     Cart cart = cartService.getCart(session);
     List<CartLine> lines = cartService.buildLines(cart);
     model.addAttribute("lines", lines);

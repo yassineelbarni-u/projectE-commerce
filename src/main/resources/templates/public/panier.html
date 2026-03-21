@@ -12,7 +12,7 @@
 
 <nav class="pub-nav">
     <a th:href="@{/}" class="pub-nav-brand">
-        <div class="brand-dot">🛒</div>
+        <div class="brand-dot">SS</div>
         <span class="brand-name">StoreShop</span>
     </a>
     <ul class="pub-nav-links">
@@ -32,10 +32,10 @@
     </div>
 
     <div class="cart-empty" th:if="${lines == null or #lists.isEmpty(lines)}">
-        <div class="cart-empty-icon">🧺</div>
+        <div class="cart-empty-icon">Panier vide</div>
         <h3>Votre panier est vide</h3>
         <p>Ajoutez des produits depuis le catalogue.</p>
-        <a th:href="@{/produits}" class="btn-ink">Voir le catalogue →</a>
+        <a th:href="@{/produits}" class="btn-ink">Voir le catalogue</a>
     </div>
 
     <div th:if="${lines != null and !#lists.isEmpty(lines)}" class="cart-shell">
@@ -52,7 +52,7 @@
                     <div class="cart-thumb">
                         <img th:if="${line.produit.imageUrl != null and !line.produit.imageUrl.isEmpty()}"
                              th:src="@{${line.produit.imageUrl}}" th:alt="${line.produit.name}">
-                        <div th:unless="${line.produit.imageUrl != null and !line.produit.imageUrl.isEmpty()}" class="cart-thumb-placeholder">📦</div>
+                        <div th:unless="${line.produit.imageUrl != null and !line.produit.imageUrl.isEmpty()}" class="cart-thumb-placeholder">Image</div>
                     </div>
                     <div>
                         <div class="cart-name" th:text="${line.produit.name}">Produit</div>
@@ -87,7 +87,7 @@
                     <button type="submit" class="btn-ghost-ink">Vider le panier</button>
                 </form>
                 <form th:action="@{/commandes/checkout}" method="post">
-                    <button type="submit" class="btn-ink">Valider la commande →</button>
+                    <button type="submit" class="btn-ink">Valider la commande</button>
                 </form>
             </div>
         </div>
