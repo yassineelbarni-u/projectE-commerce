@@ -20,7 +20,9 @@
         <li><a th:href="@{/produits}" class="nav-link-hide">Catalogue</a></li>
         <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Connexion</a></li>
         <li sec:authorize="isAnonymous()"><a th:href="@{/register}" class="nav-cta">Créer un compte</a></li>
-        <li sec:authorize="isAuthenticated()"><a th:href="@{/admin/dashboard}" class="nav-cta">Dashboard</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/panier}">Panier <span class="cart-pill" th:text="${cartCount}">0</span></a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/commandes}">Mes commandes</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}" class="nav-cta">Dashboard</a></li>
     </ul>
 </nav>
 

@@ -20,7 +20,9 @@
         <li><a th:href="@{/produits}" class="nav-link-hide">Catalogue</a></li>
         <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Connexion</a></li>
         <li sec:authorize="isAnonymous()"><a th:href="@{/register}" class="nav-cta">Créer un compte</a></li>
-        <li sec:authorize="isAuthenticated()"><a th:href="@{/admin/dashboard}" class="nav-cta">Dashboard</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/panier}">Panier <span class="cart-pill" th:text="${cartCount}">0</span></a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/commandes}">Mes commandes</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}" class="nav-cta">Dashboard</a></li>
     </ul>
 </nav>
 
@@ -70,9 +72,17 @@
 
             <div class="detail-callout" sec:authorize="isAuthenticated()"
                  style="background:rgba(45,90,61,0.07);border-color:rgba(45,90,61,0.15);">
-                <h3>Vous êtes connecté ✓</h3>
-                <p>Retournez au catalogue ou gérez les produits depuis le dashboard.</p>
-                <a th:href="@{/produits}" class="btn-ghost-ink">← Catalogue</a>
+                <h3>Ajoutez au panier</h3>
+                <p>Sélectionnez la quantité puis validez.</p>
+                <form th:action="@{/panier/add}" method="post" class="detail-cart-form">
+                    <input type="hidden" name="produitId" th:value="${produit.id}">
+                    <input type="hidden" name="returnUrl" th:value="${'/produits/detail?id=' + produit.id}">
+                    <div class="detail-cart-row">
+                        <input type="number" name="quantity" min="1" th:attr="max=${produit.stock}" value="1">
+                        <button type="submit" class="btn-ink" th:disabled="${produit.stock <= 0}">Ajouter au panier</button>
+                    </div>
+                </form>
+                <a th:href="@{/panier}" class="btn-ghost-ink">Voir mon panier →</a>
             </div>
         </div>
     </div>

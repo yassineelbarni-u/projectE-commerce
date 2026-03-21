@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panier — StoreShop</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/public.css}" />
+</head>
+<body>
+
+<nav class="pub-nav">
+    <a th:href="@{/}" class="pub-nav-brand">
+        <div class="brand-dot">🛒</div>
+        <span class="brand-name">StoreShop</span>
+    </a>
+    <ul class="pub-nav-links">
+        <li><a th:href="@{/produits}" class="nav-link-hide">Catalogue</a></li>
+        <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Connexion</a></li>
+        <li sec:authorize="isAnonymous()"><a th:href="@{/register}" class="nav-cta">Créer un compte</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/panier}">Panier <span class="cart-pill" th:text="${cartCount}">0</span></a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/commandes}">Mes commandes</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}" class="nav-cta">Dashboard</a></li>
+    </ul>
+</nav>
+
+<section class="pub-section">
+    <div class="section-header">
+        <h2 class="section-title">Mon panier</h2>
+        <span class="section-count" th:text="${lines != null ? #lists.size(lines) : 0} + ' article(s)'">0 article(s)</span>
+    </div>
+
+    <div class="cart-empty" th:if="${lines == null or #lists.isEmpty(lines)}">
+        <div class="cart-empty-icon">🧺</div>
+        <h3>Votre panier est vide</h3>
+        <p>Ajoutez des produits depuis le catalogue.</p>
+        <a th:href="@{/produits}" class="btn-ink">Voir le catalogue →</a>
+    </div>
+
+    <div th:if="${lines != null and !#lists.isEmpty(lines)}" class="cart-shell">
+        <div class="cart-table">
+            <div class="cart-row cart-head">
+                <div>Produit</div>
+                <div>Prix</div>
+                <div>Quantité</div>
+                <div>Total</div>
+                <div></div>
+            </div>
+            <div class="cart-row" th:each="line : ${lines}">
+                <div class="cart-product">
+                    <div class="cart-thumb">
+                        <img th:if="${line.produit.imageUrl != null and !line.produit.imageUrl.isEmpty()}"
+                             th:src="@{${line.produit.imageUrl}}" th:alt="${line.produit.name}">
+                        <div th:unless="${line.produit.imageUrl != null and !line.produit.imageUrl.isEmpty()}" class="cart-thumb-placeholder">📦</div>
+                    </div>
+                    <div>
+                        <div class="cart-name" th:text="${line.produit.name}">Produit</div>
+                        <div class="cart-meta" th:text="${line.produit.categorie != null ? line.produit.categorie.nom : 'Général'}"></div>
+                    </div>
+                </div>
+                <div class="cart-price" th:text="${#numbers.formatDecimal(line.produit.price, 1, 2)} + ' €'"></div>
+                <div>
+                    <form th:action="@{/panier/update}" method="post" class="cart-qty-form">
+                        <input type="hidden" name="produitId" th:value="${line.produit.id}">
+                        <input type="number" name="quantity" min="1" th:attr="max=${line.produit.stock}" th:value="${line.quantity}">
+                        <button type="submit" class="btn-ghost-ink">Mettre à jour</button>
+                    </form>
+                </div>
+                <div class="cart-total" th:text="${#numbers.formatDecimal(line.lineTotal, 1, 2)} + ' €'"></div>
+                <div>
+                    <form th:action="@{/panier/remove}" method="post">
+                        <input type="hidden" name="produitId" th:value="${line.produit.id}">
+                        <button type="submit" class="cart-remove">Retirer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-summary">
+            <div class="cart-summary-line">
+                <span>Total panier</span>
+                <strong th:text="${#numbers.formatDecimal(total, 1, 2)} + ' €'"></strong>
+            </div>
+            <div class="cart-summary-actions">
+                <form th:action="@{/panier/clear}" method="post">
+                    <button type="submit" class="btn-ghost-ink">Vider le panier</button>
+                </form>
+                <form th:action="@{/commandes/checkout}" method="post">
+                    <button type="submit" class="btn-ink">Valider la commande →</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
