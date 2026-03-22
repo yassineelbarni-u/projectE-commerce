@@ -32,24 +32,24 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
-/** Tests unitaires pour ProduitController Utilise JUnit 5 (Jupiter) et Mockito */
+/** Unit tests for ProduitController. Uses JUnit 5 (Jupiter) and Mockito */
 
-// active Mockito avec junit dans ce test
+// activate Mockito with junit in this test
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Controller Produit")
 class ProduitControllerTest {
 
-  // Mock des dépendances pour isoler le controller
+  // Mock dependencies to isolate the controller
   @Mock private ProduitService produitService;
 
   @Mock private CategorieService categorieService;
 
-  // Mock du model pour verifier les attributs ajoutes
+  // Mock the model to verify added attributes
   @Mock private Model model;
 
   @InjectMocks private ProduitController produitController;
 
-  // MockMvc pour tester les endpoints HTTP
+  // MockMvc to test HTTP endpoints
   private MockMvc mockMvc;
 
   private Produit produit1;
@@ -59,14 +59,14 @@ class ProduitControllerTest {
 
   @BeforeEach
   void setUp() {
-    // Initialiser MockMvc avec le controller a tester
+    // Initialize MockMvc with the controller to test
     mockMvc = MockMvcBuilders.standaloneSetup(produitController).build();
 
-    // Créer les catégories pour les tests
+    // Create categories for tests
     categorie1 = new Categorie(1L, null, "Electronique");
     categorie2 = new Categorie(2L, null, "Informatique");
 
-    // Créer les produits avec la nouvelle structure
+    // Create products with the new structure
     produit1 = new Produit();
     produit1.setId(1L);
     produit1.setName("Smartphone");
@@ -90,18 +90,18 @@ class ProduitControllerTest {
   @DisplayName("Test index - Liste des produits")
   void testIndex() {
 
-    // Arrange (Ou jai prepare mes donnees pour les informations)
+    // Arrange (Where I prepared my data for information)
     List<Produit> produits = Arrays.asList(produit1, produit2);
     Page<Produit> page = new PageImpl<>(produits);
-    // simuler le comportement du service pour retourner la page de produits
+    // simulate service behavior to return product page
     when(produitService.searchProduits(anyString(), anyInt(), anyInt())).thenReturn(page);
 
-    // Act (quend jai execute la methode que je veux tester)
+    // Act (when I executed the method I want to test)
     String view = produitController.index(model, 0, 5, "");
 
-    // assert (verifier le resultat)
+    // assert (verify the result)
     assertEquals("produit/ListeProduit", view);
-    // verifier les donnees ajoutees au model
+    // verify data added to the model
     verify(model).addAttribute("ListeProduit", produits);
     verify(model).addAttribute("currentPage", 0);
   }

@@ -9,9 +9,9 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    // Expose le dossier d'upload comme ressources statiques accessibles via /uploads/**
+    // Expose the upload directory as static resources accessible via /uploads/**
     registry
-        .addResourceHandler("/uploads/**")
-        .addResourceLocations("file:src/main/resources/static/uploads/");
+      .addResourceHandler("/uploads/**")
+      .addResourceLocations("file:src/main/resources/static/uploads/");
   }
 }

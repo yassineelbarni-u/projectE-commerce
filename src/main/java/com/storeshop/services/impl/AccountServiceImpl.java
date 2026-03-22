@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  // Méthode utilitaire pour créer un utilisateur uniquement s'il n'existe pas
+  // Utility method to create a user only if it does not exist
   public User ensureUserExists(String username, String password, String email) {
     User existingUser = UserRepository.findByUsername(username);
     if (existingUser == null) {

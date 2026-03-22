@@ -29,12 +29,12 @@ public class CategorieServiceImpl implements CategorieService {
 
   @Override
   public Categorie saveCategorie(Categorie categorie) {
-    // Validation: vérifier que le nom n'est pas vide
+    // Validation: check that the name is not empty
     if (categorie.getNom() == null || categorie.getNom().trim().isEmpty()) {
       throw new RuntimeException("Le nom de la catégorie ne peut pas être vide");
     }
 
-    // Vérifier si une catégorie avec le même nom existe déjà (sauf si c'est une modification)
+    // Check if a category with the same name already exists (except if it's a modification)
     if (categorie.getId() == null) {
       if (categorieRepository.existsByNom(categorie.getNom())) {
         throw new RuntimeException("Une catégorie avec ce nom existe déjà");

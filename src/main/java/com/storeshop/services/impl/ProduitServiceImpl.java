@@ -1,13 +1,15 @@
 package com.storeshop.services.impl;
 
-import com.storeshop.entities.Produit;
-import com.storeshop.repositories.ProduitRepository;
-import com.storeshop.services.ProduitService;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import com.storeshop.entities.Produit;
+import com.storeshop.repositories.ProduitRepository;
+import com.storeshop.services.ProduitService;
+
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
 @Service
 @Transactional
@@ -18,7 +20,7 @@ public class ProduitServiceImpl implements ProduitService {
 
   @Override
   public Page<Produit> searchProduits(String search, int page, int size) {
-    // Utiliser la méthode de recherche du repository
+    // Use the repository search method
     return produitRepository.searchProduits(search, PageRequest.of(page, size));
   }
 
@@ -26,19 +28,19 @@ public class ProduitServiceImpl implements ProduitService {
   public Page<Produit> searchProduitsPublic(String search, Long categorieId, int page, int size) {
     String normalizedSearch = search == null ? "" : search.trim();
     return produitRepository.searchProduitsPublic(
-        normalizedSearch, categorieId, PageRequest.of(page, size));
+      normalizedSearch, categorieId, PageRequest.of(page, size));
   }
 
   @Override
   public Produit getProduitById(Long id) {
     return produitRepository
-        .findById(id)
-        .orElseThrow(() -> new RuntimeException("Produit non trouve avec id: " + id));
+      .findById(id)
+      .orElseThrow(() -> new RuntimeException("Produit non trouve avec id: " + id));
   }
 
   @Override
   public Produit saveProduit(Produit produit) {
-    // Validation de base
+    // Basic validation
     if (produit.getName() == null || produit.getName().trim().isEmpty()) {
       throw new RuntimeException("Le nom du produit ne peut pas etre vide");
     }

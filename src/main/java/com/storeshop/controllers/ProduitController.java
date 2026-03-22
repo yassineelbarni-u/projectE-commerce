@@ -1,9 +1,5 @@
 package com.storeshop.controllers;
 
-import com.storeshop.entities.Categorie;
-import com.storeshop.entities.Produit;
-import com.storeshop.services.CategorieService;
-import com.storeshop.services.ProduitService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,7 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,19 +18,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.storeshop.entities.Categorie;
+import com.storeshop.entities.Produit;
+import com.storeshop.services.CategorieService;
+import com.storeshop.services.ProduitService;
+
+import lombok.AllArgsConstructor;
+
 @Controller
 @RequestMapping("/admin/produits")
 @AllArgsConstructor
 public class ProduitController {
 
-  // Injection de dépendances
+  // Dependency injection
   private final ProduitService produitService;
   private final CategorieService categorieService;
 
-  // Chemin pour stocker les images uploadées
+  // Path to store uploaded images
   private static final String UPLOAD_DIR = "src/main/resources/static/uploads/";
 
-  // Afficher la liste des produits avec pagination et recherche
+  // Display the list of products with pagination and search
   @GetMapping
   public String index(
       Model model,
@@ -68,7 +71,7 @@ public class ProduitController {
     }
   }
 
-  // Afficher le formulaire d'édition d'un produit
+  // Display the product edit form
   @GetMapping("/edit")
   public String showEditForm(
       @RequestParam(name = "id") Long id,
@@ -80,10 +83,11 @@ public class ProduitController {
     model.addAttribute("produit", produit);
     model.addAttribute("categories", categories);
     model.addAttribute("search", search);
+
     return "produit/editProduit";
   }
 
-  // methode pour sauvegarder la modification d'un produit
+  // Method to save product modification
   @PostMapping("/edit")
   @SuppressWarnings("CallToPrintStackTrace")
   public String saveProduit(
@@ -92,15 +96,15 @@ public class ProduitController {
       @RequestParam(name = "search", defaultValue = "") String search,
       @RequestParam(name = "imageFile", required = false) MultipartFile imageFile) {
 
-    // Associer la catégorie au produit
+    // Associate the category to the product
     if (categorieId != null) {
       Categorie categorie = categorieService.getCategorieById(categorieId);
 
-      // Associer la categorie au produit
+      // Associate the category to the product
       produit.setCategorie(categorie);
     }
 
-    // Gérer l'upload de l'image si un fichier est fourni
+    // Handle image upload if a file is provided
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
         String fileName = saveImageFile(imageFile);
@@ -141,13 +145,13 @@ public class ProduitController {
       @RequestParam(name = "search", defaultValue = "") String search,
       @RequestParam(name = "imageFile", required = false) MultipartFile imageFile) {
 
-    // Associer la catégorie au produit
+    // Associate the category to the product
     if (categorieId != null) {
       Categorie categorie = categorieService.getCategorieById(categorieId);
       produit.setCategorie(categorie);
     }
 
-    // Gérer l'upload de l'image si un fichier est fourni
+    // Handle image upload if a file is provided
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
         String fileName = saveImageFile(imageFile);
@@ -170,15 +174,15 @@ public class ProduitController {
     return "redirect:/admin/dashboard";
   }
 
-  // Méthode pour sauvegarder l'image uploadée
+  // Method to save uploaded image
   private String saveImageFile(MultipartFile file) throws IOException {
-    // Créer le dossier s'il n'existe pas
+    // Create the directory if it does not exist
     Path uploadPath = Paths.get(UPLOAD_DIR);
     if (!Files.exists(uploadPath)) {
       Files.createDirectories(uploadPath);
     }
 
-    // Générer un nom de fichier unique
+    // Generate a unique file name
     String originalFileName = file.getOriginalFilename();
     String extension = "";
     if (originalFileName != null && originalFileName.contains(".")) {
@@ -186,7 +190,7 @@ public class ProduitController {
     }
     String fileName = UUID.randomUUID().toString() + extension;
 
-    // Sauvegarder le fichier
+    // Save the file
     Path filePath = uploadPath.resolve(fileName);
     Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
