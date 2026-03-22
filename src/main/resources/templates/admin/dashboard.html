@@ -22,29 +22,34 @@
         <main class="admin-content">
             <div class="page-header">
                 <div class="page-header-left">
-                    <h1>Bonjour, <span sec:authentication="name">Admin</span> 👋</h1>
+                    <h1>Bonjour, <span sec:authentication="name">Admin</span> </h1>
                     <p>Gérez votre boutique depuis ce panneau d'administration.</p>
                 </div>
             </div>
             <div class="menu-grid">
                 <a th:href="@{/admin/produits}" class="menu-card">
-                    <div class="menu-card-icon blue">📦</div>
+                    <div class="menu-card-icon blue"></div>
                     <div class="menu-card-info"><h3>Gestion des Produits</h3><p>Ajouter, modifier ou supprimer des produits</p></div>
                     <span class="menu-card-arrow">›</span>
                 </a>
                 <a th:href="@{/admin/users}" class="menu-card">
-                    <div class="menu-card-icon green">👥</div>
+                    <div class="menu-card-icon green"></div>
                     <div class="menu-card-info"><h3>Gestion des Utilisateurs</h3><p>Gérer les comptes et leurs rôles</p></div>
                     <span class="menu-card-arrow">›</span>
                 </a>
+                <a th:href="@{/admin/commandes}" class="menu-card">
+                    <div class="menu-card-icon purple"></div>
+                    <div class="menu-card-info"><h3>Gestion des Commandes</h3><p>Suivre les commandes clients</p></div>
+                    <span class="menu-card-arrow">›</span>
+                </a>
                 <a th:href="@{/admin/categories}" class="menu-card">
-                    <div class="menu-card-icon amber">📂</div>
+                    <div class="menu-card-icon amber"></div>
                     <div class="menu-card-info"><h3>Gestion des Catégories</h3><p>Organiser les catégories de produits</p></div>
                     <span class="menu-card-arrow">›</span>
                 </a>
             </div>
             <div class="info-panel">
-                <span class="info-icon">🔒</span>
+                <span class="info-icon"></span>
                 <p>Vous êtes connecté en tant qu'administrateur avec tous les privilèges système.</p>
             </div>
         </main>

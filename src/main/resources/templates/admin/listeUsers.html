@@ -21,22 +21,22 @@
                 </div>
             </div>
             <div class="topbar-actions">
-                <a th:href="@{/admin/users/add}" class="btn-primary-custom">＋ Ajouter</a>
+                <a th:href="@{/admin/users/add}" class="btn-primary-custom">Ajouter</a>
             </div>
         </header>
         <main class="admin-content">
 
             <div th:if="${param.success}" class="alert-custom success">
-                <span>✅</span>
+                <span>Succes:</span>
                 <span th:if="${param.success[0] == 'add'}">Utilisateur ajouté avec succès.</span>
                 <span th:if="${param.success[0] == 'edit'}">Utilisateur modifié avec succès.</span>
                 <span th:if="${param.success[0] == 'delete'}">Utilisateur supprimé avec succès.</span>
-                <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+                <button class="alert-close" onclick="this.parentElement.remove()">Fermer</button>
             </div>
             <div th:if="${param.error}" class="alert-custom danger">
-                <span>⚠️</span>
+                <span>Erreur:</span>
                 <span th:text="${param.error}"></span>
-                <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+                <button class="alert-close" onclick="this.parentElement.remove()">Fermer</button>
             </div>
 
             <div class="page-header">
@@ -45,13 +45,13 @@
                     <p>Liste de tous les comptes enregistrés</p>
                 </div>
                 <div class="page-header-right">
-                    <a th:href="@{/admin/users/add}" class="btn-primary-custom">＋ Nouvel utilisateur</a>
-                    <a th:href="@{/admin/dashboard}" class="btn-ghost">← Dashboard</a>
+                    <a th:href="@{/admin/users/add}" class="btn-primary-custom">Nouvel utilisateur</a>
+                    <a th:href="@{/admin/dashboard}" class="btn-ghost">Dashboard</a>
                 </div>
             </div>
 
             <div class="panel">
-                <div class="panel-header"><h2>👥 Tous les utilisateurs</h2></div>
+                <div class="panel-header"><h2>Tous les utilisateurs</h2></div>
                 <div style="overflow-x:auto;">
                     <table class="admin-table">
                         <thead>
@@ -77,9 +77,9 @@
                                 </td>
                                 <td>
                                     <div style="display:flex;gap:6px;">
-                                        <a th:href="@{/admin/users/edit(userId=${user.userId})}" class="btn-icon edit">✏️ Modifier</a>
+                                                     <a th:href="@{/admin/users/edit(userId=${user.userId})}" class="btn-icon edit">Modifier</a>
                                         <a th:href="@{/admin/users/delete(userId=${user.userId})}" class="btn-icon delete"
-                                           onclick="return confirm('Supprimer cet utilisateur ?')">🗑️ Supprimer</a>
+                                                         onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</a>
                                     </div>
                                 </td>
                             </tr>

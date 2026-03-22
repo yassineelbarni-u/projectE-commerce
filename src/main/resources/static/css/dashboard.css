@@ -458,6 +458,35 @@ html, body {
 .badge-role.admin { background: #fee2e2; color: #dc2626; }
 .badge-role.user  { background: var(--accent-light); color: var(--accent); }
 
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  background: var(--warning-light);
+  color: var(--warning);
+}
+.badge-status.success { background: var(--success-light); color: var(--success); }
+.badge-status.danger { background: var(--danger-light); color: var(--danger); }
+
+.status-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.status-select {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 12px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
 /* ===== BUTTONS ===== */
 .btn-primary-custom {
   display: inline-flex;

@@ -18,7 +18,7 @@
              alt="Visual" />
         <div class="visual-content">
             <div class="visual-brand">
-                <div class="vb-icon">🛒</div>
+                <div class="vb-icon">SS</div>
                 <div>
                     <div class="vb-name">StoreAdmin</div>
                     <div class="vb-sub">Back Office</div>
@@ -38,13 +38,13 @@
             <p class="subtitle">Entrez vos identifiants</p>
 
             <div th:if="${param.error}" class="login-alert danger">
-                <span>⚠️</span> Nom d'utilisateur ou mot de passe incorrect.
+                <span>Erreur:</span> Nom d'utilisateur ou mot de passe incorrect.
             </div>
             <div th:if="${param.logout}" class="login-alert success">
-                <span>✅</span> Vous avez été déconnecté avec succes.
+                <span>Succes:</span> Vous avez été déconnecté avec succes.
             </div>
             <div th:if="${param.registered}" class="login-alert success">
-                <span>✅</span> Inscription reussie ! Vous pouvez vous connecter.
+                <span>Succes:</span> Inscription reussie ! Vous pouvez vous connecter.
             </div>
 
             <form th:action="@{/login}" method="post">
@@ -58,11 +58,12 @@
                     <input type="password" id="password" name="password"
                            placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn-login">Se connecter →</button>
+                <button type="submit" class="btn-login">Se connecter</button>
             </form>
 
             <div class="login-footer">
                 <a th:href="@{/register}">Creer un compte client</a>
+                <a th:href="@{/}" class="btn-ghost-ink">Retour au site</a>
             </div>
         </div>
     </div>

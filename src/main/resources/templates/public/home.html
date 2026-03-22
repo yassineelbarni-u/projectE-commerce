@@ -13,14 +13,16 @@
 <!-- ===== NAVBAR ===== -->
 <nav class="pub-nav">
     <a th:href="@{/}" class="pub-nav-brand">
-        <div class="brand-dot">🛒</div>
+        <div class="brand-dot">SS</div>
         <span class="brand-name">StoreShop</span>
     </a>
     <ul class="pub-nav-links">
         <li><a th:href="@{/produits}" class="nav-link-hide">Catalogue</a></li>
         <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Connexion</a></li>
         <li sec:authorize="isAnonymous()"><a th:href="@{/register}" class="nav-cta">Créer un compte</a></li>
-        <li sec:authorize="isAuthenticated()"><a th:href="@{/admin/dashboard}" class="nav-cta">Dashboard</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/panier}">Panier <span class="cart-pill" th:text="${cartCount}">0</span></a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/commandes}">Mes commandes</a></li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin/dashboard}" class="nav-cta">Dashboard</a></li>
     </ul>
 </nav>
 
@@ -35,7 +37,7 @@
         </h1>
         <p class="hero-sub">Parcourez notre sélection de produits, filtrez par catégorie et consultez chaque fiche en détail — sans inscription requise.</p>
         <div class="hero-btns">
-            <a th:href="@{/produits}" class="btn-ink">Voir le catalogue →</a>
+            <a th:href="@{/produits}" class="btn-ink">Voir le catalogue</a>
             <a th:href="@{/register}" class="btn-ghost-ink" sec:authorize="isAnonymous()">Créer un compte</a>
         </div>
     </div>
@@ -49,7 +51,7 @@
                 <div style="font-size:10px;opacity:.6;letter-spacing:.5px;text-transform:uppercase;">Produits disponibles</div>
                 <div class="pill-num" th:text="${totalProduits != null ? totalProduits : '∞'}">∞</div>
             </div>
-            <span style="font-size:20px;">📦</span>
+            <span style="font-size:12px;">Produits</span>
         </div> -->
     </div>
 </section>
@@ -90,27 +92,27 @@
         <article class="product-card" th:each="produit : ${ListeProduit}">
             <div class="product-card-media">
                  <img th:if="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}"
-                     th:src="@{${produit.imageUrl}}" th:alt="${produit.nom}">
-                <div th:unless="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}"
-                     class="product-card-placeholder">📦</div>
+                     th:src="@{${produit.imageUrl}}" th:alt="${produit.name}">
+                 <div th:unless="${produit.imageUrl != null and !produit.imageUrl.isEmpty()}"
+                     class="product-card-placeholder">Image</div>
             </div>
             <div class="product-card-body">
                 <div class="product-card-meta">
                     <span class="cat-tag" th:text="${produit.categorie != null ? produit.categorie.nom : 'Général'}"></span>
-                    <span th:if="${produit.stock > 0}" class="stock-ok" th:text="'✓ ' + ${produit.stock}"></span>
+                    <span th:if="${produit.stock > 0}" class="stock-ok" th:text="${produit.stock} + ' en stock'"></span>
                     <span th:unless="${produit.stock > 0}" class="stock-low">Rupture</span>
                 </div>
-                <h2 th:text="${produit.nom}"></h2>
+                <h2 th:text="${produit.name}"></h2>
                 <p th:text="${produit.description != null and !produit.description.isEmpty() ? produit.description : 'Aucune description.'}"></p>
             </div>
             <div class="product-card-footer">
-                <span class="product-price" th:text="${#numbers.formatDecimal(produit.prix, 1, 2)} + ' €'"></span>
-                <a class="btn-detail" th:href="@{/produits/detail(id=${produit.id})}">Détail →</a>
+                <span class="product-price" th:text="${#numbers.formatDecimal(produit.price, 1, 2)} + ' €'"></span>
+                <a class="btn-detail" th:href="@{/produits/detail(id=${produit.id})}">Détail</a>
             </div>
         </article>
 
         <div class="empty-state" th:if="${#lists.isEmpty(ListeProduit)}">
-            <div class="empty-state-icon">🔍</div>
+            <div class="empty-state-icon">Aucun resultat</div>
             <h3>Aucun produit trouvé</h3>
             <p>Essayez une autre recherche ou retirez le filtre catégorie.</p>
             <a th:href="@{/produits}" class="btn-ink">Réinitialiser</a>

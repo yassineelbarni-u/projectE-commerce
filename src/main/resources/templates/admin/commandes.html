@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Commandes</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}" />
+</head>
+<body>
+<div class="admin-shell">
+
+    <div th:insert="~{adminLayout :: sidebar('commandes')}"></div>
+
+    <div class="admin-main">
+        <header class="admin-topbar">
+            <div>
+                <div class="topbar-title">Commandes</div>
+                <div class="topbar-breadcrumb">
+                    <a th:href="@{/admin/dashboard}" style="color:inherit;text-decoration:none;">Accueil</a> › Commandes
+                </div>
+            </div>
+        </header>
+        <main class="admin-content">
+
+            <div th:if="${param.success}" class="alert-custom success">
+                <span>Succes:</span>
+                <span>Statut de commande mis à jour.</span>
+                <button class="alert-close" onclick="this.parentElement.remove()">Fermer</button>
+            </div>
+            <div th:if="${param.error}" class="alert-custom danger">
+                <span>Erreur:</span>
+                <span th:text="${param.error}"></span>
+                <button class="alert-close" onclick="this.parentElement.remove()">Fermer</button>
+            </div>
+
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1>Gestion des Commandes</h1>
+                    <p>Suivi des commandes des clients</p>
+                </div>
+                <div class="page-header-right">
+                    <a th:href="@{/admin/dashboard}" class="btn-ghost">Dashboard</a>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header"><h2>Commandes</h2></div>
+                <div style="overflow-x:auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Client</th>
+                                <th>Date</th>
+                                <th>Articles</th>
+                                <th>Total</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="order : ${orders}">
+                                <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#718096;" th:text="'#' + ${order.id}"></span></td>
+                                <td>
+                                    <strong th:text="${order.user != null ? order.user.username : '—'}"></strong>
+                                </td>
+                                <td th:text="${order.createdAt != null ? #temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm') : '—'}"></td>
+                                <td th:text="${order.items != null ? #lists.size(order.items) : 0}"></td>
+                                <td><strong th:text="${#numbers.formatDecimal(order.total, 1, 2)} + ' €'"></strong></td>
+                                <td>
+                                    <span class="badge-status"
+                                          th:classappend="${order.status == 'VALIDEE'} ? ' success' : (${order.status == 'ANNULEE'} ? ' danger' : ' warning')"
+                                          th:text="${order.status != null ? order.status : 'EN_COURS'}"></span>
+                                </td>
+                                <td>
+                                    <form th:action="@{/admin/commandes/status}" method="post" class="status-form">
+                                        <input type="hidden" name="id" th:value="${order.id}">
+                                        <select name="status" class="status-select">
+                                            <option value="EN_COURS" th:selected="${order.status == 'EN_COURS' or order.status == null}">EN_COURS</option>
+                                            <option value="VALIDEE" th:selected="${order.status == 'VALIDEE'}">VALIDEE</option>
+                                            <option value="ANNULEE" th:selected="${order.status == 'ANNULEE'}">ANNULEE</option>
+                                        </select>
+                                        <button type="submit" class="btn-primary-custom">Mettre à jour</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>
