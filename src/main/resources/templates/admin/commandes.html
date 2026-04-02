@@ -70,16 +70,17 @@
                                 <td><strong th:text="${#numbers.formatDecimal(order.total, 1, 2)} + ' €'"></strong></td>
                                 <td>
                                     <span class="badge-status"
-                                          th:classappend="${order.status == 'VALIDEE'} ? ' success' : (${order.status == 'ANNULEE'} ? ' danger' : ' warning')"
+                                          th:classappend="${order.status != null and order.status.name() == 'VALIDEE'} ? ' success' : (${order.status != null and order.status.name() == 'ANNULEE'} ? ' danger' : ' warning')"
                                           th:text="${order.status != null ? order.status : 'EN_COURS'}"></span>
                                 </td>
                                 <td>
                                     <form th:action="@{/admin/commandes/status}" method="post" class="status-form">
                                         <input type="hidden" name="id" th:value="${order.id}">
                                         <select name="status" class="status-select">
-                                            <option value="EN_COURS" th:selected="${order.status == 'EN_COURS' or order.status == null}">EN_COURS</option>
-                                            <option value="VALIDEE" th:selected="${order.status == 'VALIDEE'}">VALIDEE</option>
-                                            <option value="ANNULEE" th:selected="${order.status == 'ANNULEE'}">ANNULEE</option>
+                                            <option value="EN_COURS" th:selected="${order.status == null or order.status.name() == 'EN_COURS'}">EN_COURS</option>
+                                            <option value="VALIDEE" th:selected="${order.status != null and order.status.name() == 'VALIDEE'}">VALIDEE</option>
+                                            <option value="LIVREE" th:selected="${order.status != null and order.status.name() == 'LIVREE'}">LIVREE</option>
+                                            <option value="ANNULEE" th:selected="${order.status != null and order.status.name() == 'ANNULEE'}">ANNULEE</option>
                                         </select>
                                         <button type="submit" class="btn-primary-custom">Mettre à jour</button>
                                     </form>

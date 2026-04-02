@@ -69,7 +69,7 @@ class CommandeServiceImplTest {
     Commande result = commandeService.createOrder(user, items);
 
     assertNotNull(result);
-    assertEquals("VALIDEE", result.getStatus());
+    assertEquals(CommandeStatus.VALIDEE, result.getStatus());
     assertEquals(user, result.getUser());
     assertEquals(2800.0, result.getTotal(), 0.01);
     verify(commandeRepository).save(any(Commande.class));
@@ -157,14 +157,14 @@ class CommandeServiceImplTest {
   @DisplayName("updateStatus - met à jour le statut d'une commande")
   void testUpdateStatus_Success() {
     Commande commande = new Commande();
-    commande.setStatus("VALIDEE");
+    commande.setStatus(CommandeStatus.VALIDEE);
 
     when(commandeRepository.findById(1L)).thenReturn(Optional.of(commande));
     when(commandeRepository.save(any(Commande.class))).thenAnswer(i -> i.getArgument(0));
 
     commandeService.updateStatus(1L, "LIVREE");
 
-    assertEquals("LIVREE", commande.getStatus());
+    assertEquals(CommandeStatus.LIVREE, commande.getStatus());
     verify(commandeRepository).save(commande);
   }
 

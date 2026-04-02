@@ -8,6 +8,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,8 @@ public class ProduitController {
 
   // Path to store uploaded images
   private static final String UPLOAD_DIR = "src/main/resources/static/uploads/";
+
+  private static final Logger log = LoggerFactory.getLogger(ProduitController.class);
 
   // Display the list of products with pagination and search
   @GetMapping
@@ -89,7 +93,6 @@ public class ProduitController {
 
   // Method to save product modification
   @PostMapping("/edit")
-  @SuppressWarnings("CallToPrintStackTrace")
   public String saveProduit(
       @ModelAttribute Produit produit,
       @RequestParam(name = "categorieId", required = false) Long categorieId,
@@ -110,7 +113,7 @@ public class ProduitController {
         String fileName = saveImageFile(imageFile);
         produit.setImageUrl("/uploads/" + fileName);
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error("Failed to save image file for product edit", e);
       }
     }
 
@@ -138,7 +141,6 @@ public class ProduitController {
   }
 
   @PostMapping("/add")
-  @SuppressWarnings("CallToPrintStackTrace")
   public String addProduit(
       @ModelAttribute Produit produit,
       @RequestParam(name = "categorieId", required = false) Long categorieId,
@@ -157,7 +159,7 @@ public class ProduitController {
         String fileName = saveImageFile(imageFile);
         produit.setImageUrl("/uploads/" + fileName);
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error("Failed to save image file for product add", e);
       }
     }
 

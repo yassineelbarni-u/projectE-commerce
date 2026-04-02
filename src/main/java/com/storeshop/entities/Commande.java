@@ -32,7 +32,7 @@ public class Commande {
 
   private LocalDateTime createdAt;
 
-  private String status;
+  private CommandeStatus status;
 
   private double total;
 

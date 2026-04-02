@@ -2,6 +2,7 @@ package com.storeshop.services.impl;
 
 import com.storeshop.entities.Commande;
 import com.storeshop.entities.CommandeItem;
+import com.storeshop.entities.CommandeStatus;
 import com.storeshop.entities.Produit;
 import com.storeshop.entities.User;
 import com.storeshop.repositories.CommandeRepository;
@@ -31,7 +32,7 @@ public class CommandeServiceImpl implements CommandeService {
     Commande commande = new Commande();
     commande.setUser(user);
     commande.setCreatedAt(LocalDateTime.now());
-    commande.setStatus("VALIDEE");
+    commande.setStatus(CommandeStatus.VALIDEE);
 
     double total = 0;
 
@@ -72,11 +73,12 @@ public class CommandeServiceImpl implements CommandeService {
 
   @Override
   public void updateStatus(Long commandeId, String status) {
+    CommandeStatus commandeStatus = CommandeStatus.valueOf(status);
     Commande commande =
         commandeRepository
             .findById(commandeId)
             .orElseThrow(() -> new RuntimeException("Commande introuvable"));
-    commande.setStatus(status);
+    commande.setStatus(commandeStatus);
     commandeRepository.save(commande);
   }
 }

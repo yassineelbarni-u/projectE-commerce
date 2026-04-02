@@ -21,6 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
@@ -32,6 +33,8 @@ class UserControllerTest {
   @Mock private AccountService accountService;
 
   @Mock private UserRepository appUserRepository;
+
+  @Mock private PasswordEncoder passwordEncoder;
 
   @Mock private Model model;
 
@@ -129,6 +132,20 @@ class UserControllerTest {
     assertEquals("redirect:/admin/users?success=edit", redirect);
     assertEquals("adminUpdated", user1.getUsername());
     assertEquals("newmail@gmail.com", user1.getEmail());
+  }
+
+  @Test
+  void testEditUser_SuccessWithPassword() {
+    when(appUserRepository.findById("uuid-1")).thenReturn(Optional.of(user1));
+    when(passwordEncoder.encode("newPassword")).thenReturn("encodedNewPassword");
+    when(appUserRepository.save(any(User.class))).thenReturn(user1);
+
+    String redirect =
+        userController.editUser("uuid-1", "adminUpdated", "newmail@gmail.com", "newPassword", "ADMIN");
+
+    assertEquals("redirect:/admin/users?success=edit", redirect);
+    assertEquals("encodedNewPassword", user1.getPassword());
+    verify(passwordEncoder).encode("newPassword");
   }
 
   @Test

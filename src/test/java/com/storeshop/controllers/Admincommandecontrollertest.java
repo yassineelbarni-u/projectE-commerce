@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.storeshop.entities.Commande;
+import com.storeshop.entities.CommandeStatus;
 import com.storeshop.services.CommandeService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,10 +38,10 @@ class AdminCommandeControllerTest {
     mockMvc = MockMvcBuilders.standaloneSetup(adminCommandeController).build();
 
     commande1 = new Commande();
-    commande1.setStatus("VALIDEE");
+    commande1.setStatus(CommandeStatus.VALIDEE);
 
     commande2 = new Commande();
-    commande2.setStatus("LIVREE");
+    commande2.setStatus(CommandeStatus.LIVREE);
   }
 
   @Test

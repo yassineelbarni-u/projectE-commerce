@@ -1,6 +1,7 @@
 package com.storeshop.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class UserController {
 
   private final AccountService accountService;
   private final UserRepository UserRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @GetMapping("/dashboard")
   public String dashboard() {
@@ -87,12 +89,9 @@ public class UserController {
       user.setUsername(username);
       user.setEmail(email);
 
-      // Update the password if provided
+      // Update the password if provided, encoding it before storage
       if (password != null && !password.isEmpty()) {
-        user.setPassword(
-            password); // Assuming the service should hash this, wait, UserController directly sets
-        // password here? Actually, the original code doesn't hash it here. Let's
-        // leave it as is or fix it.
+        user.setPassword(passwordEncoder.encode(password));
       }
 
       // Update the role
