@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
 
+    Produit findByName(String name);
+
   // Search in name, description and category name
   @Query(
       "SELECT p FROM Produit p WHERE "
