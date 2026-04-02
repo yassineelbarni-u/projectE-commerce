@@ -28,5 +28,4 @@ public class StoreShopApplication {
     return args -> accountService.ensureUserExists(adminUsername, adminPassword, adminEmail);
   }
 
-
 }

@@ -11,6 +11,7 @@ import com.storeshop.entities.Produit;
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
 
   // Search in name, description and category name
+  // Java Persistence Query Language (JPQL) query to search products by name, description, or category name
   @Query(
       "SELECT p FROM Produit p WHERE "
           + "LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')) OR "

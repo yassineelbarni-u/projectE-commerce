@@ -27,7 +27,7 @@ public class Commande {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = false) // Each order is associated with one user
   private User user;
 
   private LocalDateTime createdAt;

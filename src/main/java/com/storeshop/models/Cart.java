@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/*
+    * Represents the shopping cart stored in the user's session. It contains a map of product IDs to quantities and provides methods to manipulate the cart.
+ */
+
 public class Cart implements Serializable {
 
   private final Map<Long, Integer> items = new LinkedHashMap<>();
