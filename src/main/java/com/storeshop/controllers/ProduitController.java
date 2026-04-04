@@ -10,8 +10,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,12 +31,23 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class ProduitController {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(ProduitController.class);
+  private static final List<String> ALLOWED_CONTENT_TYPES =
+      List.of("image/jpeg", "image/png", "image/gif", "image/webp");
+  private static final Map<String, String> CONTENT_TYPE_EXTENSIONS =
+      Map.of(
+          "image/jpeg", ".jpg",
+          "image/png", ".png",
+          "image/gif", ".gif",
+          "image/webp", ".webp");
+
   // Dependency injection
   private final ProduitService produitService;
   private final CategorieService categorieService;
 
   // Path to store uploaded images
-  private static final String UPLOAD_DIR = "src/main/resources/static/uploads/";
+  @Value("${app.upload.dir:uploads}")
+  private String uploadDir;
 
   // Display the list of products with pagination and search
   @GetMapping
@@ -86,7 +101,6 @@ public class ProduitController {
 
   // Method to save product modification
   @PostMapping("/edit")
-  @SuppressWarnings("CallToPrintStackTrace")
   public String saveProduit(
       @ModelAttribute Produit produit,
       @RequestParam(name = "categorieId", required = false) Long categorieId,
@@ -107,7 +121,7 @@ public class ProduitController {
         String fileName = saveImageFile(imageFile);
         produit.setImageUrl("/uploads/" + fileName);
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.warn("Image upload failed during product update", e);
       }
     }
 
@@ -135,7 +149,6 @@ public class ProduitController {
   }
 
   @PostMapping("/add")
-  @SuppressWarnings("CallToPrintStackTrace")
   public String addProduit(
       @ModelAttribute Produit produit,
       @RequestParam(name = "categorieId", required = false) Long categorieId,
@@ -154,7 +167,7 @@ public class ProduitController {
         String fileName = saveImageFile(imageFile);
         produit.setImageUrl("/uploads/" + fileName);
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.warn("Image upload failed during product creation", e);
       }
     }
 
@@ -173,17 +186,21 @@ public class ProduitController {
 
   // Method to save uploaded image
   private String saveImageFile(MultipartFile file) throws IOException {
+    String contentType = file.getContentType();
+    if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
+      throw new IOException("Unsupported file type");
+    }
+
     // Create the directory if it does not exist
-    Path uploadPath = Paths.get(UPLOAD_DIR);
+    Path uploadPath = Paths.get(uploadDir);
     if (!Files.exists(uploadPath)) {
       Files.createDirectories(uploadPath);
     }
 
     // Generate a unique file name
-    String originalFileName = file.getOriginalFilename();
-    String extension = "";
-    if (originalFileName != null && originalFileName.contains(".")) {
-      extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+    String extension = CONTENT_TYPE_EXTENSIONS.get(contentType);
+    if (extension == null) {
+      throw new IOException("Unsupported file type");
     }
     String fileName = UUID.randomUUID().toString() + extension;
 

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -35,6 +36,20 @@ public class ConfigSecurity {
       throws Exception {
 
     return httpSecurity
+      .headers(
+        headers ->
+          headers
+            .contentSecurityPolicy(
+              csp ->
+                csp.policyDirectives(
+                  "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"))
+            .referrerPolicy(
+              referrer ->
+                referrer.policy(
+                  ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER))
+            .frameOptions(frame -> frame.deny())
+            .httpStrictTransportSecurity(
+              hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(31536000)))
         .formLogin(
             form ->
                 form.loginPage("/login").successHandler(authenticationSuccessHandler).permitAll())
@@ -48,7 +63,7 @@ public class ConfigSecurity {
                     .permitAll())
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers(
+               auth.requestMatchers(
                         "/",
                         "/home",
                         "/produits",
