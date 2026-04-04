@@ -1,4 +1,4 @@
-name: Build  ,Test and Deploy to VPS
+name: Build , Test and Deploy to VPS via SSH
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
-          host: 31.97.55.52
+          host: ${{ secrets.HOST_NAME }}
           username: root
           password: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
           script: |
