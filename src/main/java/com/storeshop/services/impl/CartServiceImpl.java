@@ -27,6 +27,12 @@ public class CartServiceImpl implements CartService {
 
   private final ProduitService produitService;
 
+  /**
+   * Retrieves the cart from session or creates one when absent.
+   *
+   * @param session current HTTP session
+   * @return session-bound cart instance
+   */
   @Override
   public Cart getCart(HttpSession session) {
     Cart cart = (Cart) session.getAttribute(CART_SESSION_KEY);
@@ -37,30 +43,61 @@ public class CartServiceImpl implements CartService {
     return cart;
   }
 
+  /**
+   * Adds quantity to a cart line.
+   *
+   * @param session current HTTP session
+   * @param produitId product id
+   * @param quantity quantity to add
+   */
   @Override
   public void addItem(HttpSession session, Long produitId, int quantity) {
     Cart cart = getCart(session);
     cart.addItem(produitId, quantity);
   }
 
+  /**
+   * Replaces quantity for a cart line.
+   *
+   * @param session current HTTP session
+   * @param produitId product id
+   * @param quantity new quantity
+   */
   @Override
   public void updateItem(HttpSession session, Long produitId, int quantity) {
     Cart cart = getCart(session);
     cart.updateItem(produitId, quantity);
   }
 
+  /**
+   * Removes one cart line.
+   *
+   * @param session current HTTP session
+   * @param produitId product id
+   */
   @Override
   public void removeItem(HttpSession session, Long produitId) {
     Cart cart = getCart(session);
     cart.removeItem(produitId);
   }
 
+  /**
+   * Clears the entire cart.
+   *
+   * @param session current HTTP session
+   */
   @Override
   public void clear(HttpSession session) {
     Cart cart = getCart(session);
     cart.clear();
   }
 
+  /**
+   * Computes total item count across all lines.
+   *
+   * @param session current HTTP session
+   * @return sum of quantities
+   */
   @Override
   public int getTotalQuantity(HttpSession session) {
     Cart cart = getCart(session);
@@ -71,6 +108,13 @@ public class CartServiceImpl implements CartService {
     return total;
   }
 
+  /**
+   * Expands cart entries into render-ready lines.
+   *
+   * @param cart cart containing product ids and quantities
+   * @return list of lines with current product data and line totals
+   * @throws RuntimeException if a referenced product does not exist
+   */
   @Override
   public List<CartLine> buildLines(Cart cart) {
     List<CartLine> lines = new ArrayList<>();
@@ -86,6 +130,12 @@ public class CartServiceImpl implements CartService {
     return lines;
   }
 
+  /**
+   * Computes grand total from prepared lines.
+   *
+   * @param lines cart lines
+   * @return sum of line totals
+   */
   @Override
   public double computeTotal(List<CartLine> lines) {
     double total = 0;

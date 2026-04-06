@@ -26,6 +26,26 @@ public class CommandeServiceImpl implements CommandeService {
   private final CommandeRepository commandeRepository;
   private final ProduitService produitService;
 
+  /**
+   * Creates and saves an order from cart entries.
+   *
+   * <p>Processing sequence:
+   *
+   * <p>1) validate cart is not empty,
+   *
+   * <p>2) validate stock per product,
+   *
+   * <p>3) decrement stock,
+   *
+   * <p>4) snapshot unit prices and totals in order lines,
+   *
+   * <p>5) persist order with computed grand total.
+   *
+   * @param user customer placing the order
+   * @param items productId -> quantity map from cart
+   * @return persisted order
+   * @throws RuntimeException when cart is empty or stock is insufficient
+   */
   @Override
   public Commande createOrder(User user, Map<Long, Integer> items) {
     if (items == null || items.isEmpty()) {
@@ -64,16 +84,34 @@ public class CommandeServiceImpl implements CommandeService {
     return commandeRepository.save(commande);
   }
 
+  /**
+   * Returns one user's orders sorted newest first.
+   *
+   * @param user customer
+   * @return list of orders
+   */
   @Override
   public List<Commande> listUserOrders(User user) {
     return commandeRepository.findByUserOrderByCreatedAtDesc(user);
   }
 
+  /**
+   * Returns all orders sorted newest first.
+   *
+   * @return list of orders
+   */
   @Override
   public List<Commande> listAllOrders() {
     return commandeRepository.findAllByOrderByCreatedAtDesc();
   }
 
+  /**
+   * Updates status of an existing order.
+   *
+   * @param commandeId order id
+   * @param status new status value
+   * @throws RuntimeException when order does not exist
+   */
   @Override
   public void updateStatus(Long commandeId, String status) {
     Commande commande =

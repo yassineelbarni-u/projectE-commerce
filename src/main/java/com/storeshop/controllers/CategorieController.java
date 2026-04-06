@@ -15,11 +15,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/admin/categories")
 @AllArgsConstructor
+/**
+ * Admin controller for category management pages.
+ */
 public class CategorieController {
 
   private final CategorieService categorieService;
 
-  // Display the list of categories
+  /**
+   * Displays all categories.
+   *
+   * @param model MVC model receiving categories list
+   * @return categories list template
+   */
   @GetMapping
   public String index(Model model) {
     List<Categorie> categories = categorieService.getAllCategories();
@@ -27,14 +35,24 @@ public class CategorieController {
     return "categorie/ListeCategorie";
   }
 
-  // Display the add form
+  /**
+   * Opens the add-category form.
+   *
+   * @param model MVC model containing an empty category object
+   * @return add-category template
+   */
   @GetMapping("/add")
   public String showAddForm(Model model) {
     model.addAttribute("categorie", new Categorie());
     return "categorie/ajouterCategorie";
   }
 
-  // Save a new category
+  /**
+   * Creates a category from form values.
+   *
+   * @param categorie submitted category object
+   * @return redirect to list page on success or back to add form with error message
+   */
   @PostMapping("/add")
   public String addCategorie(@ModelAttribute Categorie categorie) {
     try {
@@ -42,12 +60,17 @@ public class CategorieController {
       return "redirect:/admin/categories";
     } catch (RuntimeException e) {
 
-      // In case of error (name already exists, etc.)
       return "redirect:/admin/categories/add?error=" + e.getMessage();
     }
   }
 
-  // Display the edit form
+  /**
+   * Opens the edit form for one category.
+   *
+   * @param id category id
+   * @param model MVC model receiving the selected category
+   * @return edit-category template
+   */
   @GetMapping("/edit")
   public String showEditForm(@RequestParam(name = "id") Long id, Model model) {
     Categorie categorie = categorieService.getCategorieById(id);
@@ -55,7 +78,12 @@ public class CategorieController {
     return "categorie/editCategorie";
   }
 
-  // Update a category
+  /**
+   * Applies category changes.
+   *
+   * @param categorie submitted category object
+   * @return redirect to list page on success or back to edit page with error message
+   */
   @PostMapping("/edit")
   public String editCategorie(@ModelAttribute Categorie categorie) {
     try {
@@ -66,7 +94,12 @@ public class CategorieController {
     }
   }
 
-  // Delete a category
+  /**
+   * Deletes one category.
+   *
+   * @param id category id
+   * @return redirect to list page with success/error flag
+   */
   @GetMapping("/delete")
   public String deleteCategorie(@RequestParam(name = "id") Long id) {
     try {

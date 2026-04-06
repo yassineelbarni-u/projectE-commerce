@@ -9,25 +9,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/*
-    controller for admin to manage commandes, list all commandes and update their status
-    and also to view details of a commande (not implemented yet)
-*/
-
 @Controller
 @RequestMapping("/admin/commandes")
 @AllArgsConstructor
+/**
+ * Admin controller for operational order management.
+ */
 public class AdminCommandeController {
 
   private final CommandeService commandeService;
 
+  /**
+   * Displays every order for back-office monitoring.
+   *
+   * @param model MVC model receiving all orders
+   * @return admin orders template
+   */
   @GetMapping
   public String listOrders(Model model) {
-    // return all commandes to the admin view
     model.addAttribute("orders", commandeService.listAllOrders());
     return "admin/commandes";
   }
 
+  /**
+   * Updates workflow status for one order.
+   *
+   * @param id order id
+   * @param status new status label (for example VALIDEE, EXPEDIEE)
+   * @return redirect to admin orders list with success flag
+   */
   @PostMapping("/status")
   public String updateStatus(
       @RequestParam(name = "id") Long id, @RequestParam(name = "status") String status) {

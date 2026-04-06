@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Entity representing a product in the store. */
+/**
+ * Product entity shown in catalog and managed by admins.
+ */
 @Entity
 @Getter
 @Setter
@@ -22,11 +24,21 @@ public class Produit {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  /** Category owning this product (many products can belong to one category). */
   @ManyToOne private Categorie categorie;
 
+  /** Display name shown in lists and detail pages. */
   private String name;
+
+  /** Public URL of product image (typically under /uploads or external CDN). */
   private String imageUrl;
+
+  /** Longer text describing product features. */
   private String description;
+
+  /** Unit price in store currency. Must be non-negative. */
   private double price;
+
+  /** Available stock quantity. Must be non-negative. */
   private int stock;
 }

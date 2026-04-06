@@ -16,12 +16,27 @@ import org.springframework.web.util.UriUtils;
 
 @Controller
 @AllArgsConstructor
+/**
+ * Public storefront controller.
+ *
+ * <p>Handles home/catalog pages, product detail pages, and customer registration.
+ */
 public class PublicController {
 
   private final ProduitService produitService;
   private final CategorieService categorieService;
   private final AccountService accountService;
 
+  /**
+   * Displays the public catalog with optional text search and category filter.
+   *
+   * @param model MVC model used by the home template
+   * @param page zero-based page index
+   * @param size number of products per page
+   * @param search free-text query
+   * @param categorieId optional category filter; null means all categories
+   * @return public home template
+   */
   @GetMapping({"/", "/home", "/produits"})
   public String home(
       Model model,
@@ -41,17 +56,39 @@ public class PublicController {
     return "public/home";
   }
 
+  /**
+   * Shows details for one product.
+   *
+   * @param id product id
+   * @param model MVC model receiving the selected product
+   * @return product detail template
+   */
   @GetMapping("/produits/detail")
   public String showProduitDetail(@RequestParam(name = "id") Long id, Model model) {
     model.addAttribute("produit", produitService.getProduitById(id));
     return "public/detail-produit";
   }
 
+  /**
+   * Opens the registration form.
+   *
+   * @return registration template
+   */
   @GetMapping("/register")
   public String showRegisterForm() {
     return "public/register";
   }
 
+  /**
+   * Registers a new customer account.
+   *
+   * @param username desired login name
+   * @param email customer email address
+   * @param password plain password
+   * @param confirmPassword confirmation password
+   * @return login redirect on success, or registration redirect carrying encoded error and form
+   *     values on failure
+   */
   @PostMapping("/register")
   public String register(
       @RequestParam String username,
@@ -71,6 +108,12 @@ public class PublicController {
     }
   }
 
+  /**
+   * URL-encodes a value so it can be safely appended as a query parameter.
+   *
+   * @param value input text; null is converted to an empty string
+   * @return UTF-8 encoded value
+   */
   private String encode(String value) {
     return UriUtils.encode(value == null ? "" : value, StandardCharsets.UTF_8);
   }

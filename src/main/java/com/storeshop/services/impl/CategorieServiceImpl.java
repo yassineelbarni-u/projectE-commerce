@@ -16,11 +16,23 @@ public class CategorieServiceImpl implements CategorieService {
 
   private final CategorieRepository categorieRepository;
 
+  /**
+   * Returns all categories.
+   *
+   * @return category list
+   */
   @Override
   public List<Categorie> getAllCategories() {
     return categorieRepository.findAll();
   }
 
+  /**
+   * Loads one category by id.
+   *
+   * @param id category id
+   * @return category
+   * @throws RuntimeException when id is unknown
+   */
   @Override
   public Categorie getCategorieById(Long id) {
     return categorieRepository
@@ -28,6 +40,15 @@ public class CategorieServiceImpl implements CategorieService {
         .orElseThrow(() -> new RuntimeException("Catégorie non trouvée avec l'ID: " + id));
   }
 
+  /**
+   * Validates and saves a category.
+   *
+   * <p>On creation only (id == null), category name must be unique.
+   *
+   * @param categorie category to create or update
+   * @return persisted category
+   * @throws RuntimeException when name is blank or duplicated for a new row
+   */
   @Override
   public Categorie saveCategorie(Categorie categorie) {
     if (categorie.getNom() == null || categorie.getNom().trim().isEmpty()) {
@@ -44,6 +65,12 @@ public class CategorieServiceImpl implements CategorieService {
     return categorieRepository.save(categorie);
   }
 
+  /**
+   * Deletes a category by id.
+   *
+   * @param id category id
+   * @throws RuntimeException when id does not exist
+   */
   @Override
   public void deleteCategorie(Long id) {
     if (!categorieRepository.existsById(id)) {
@@ -52,6 +79,12 @@ public class CategorieServiceImpl implements CategorieService {
     categorieRepository.deleteById(id);
   }
 
+  /**
+   * Checks category existence by name.
+   *
+   * @param nom category name
+   * @return true if category exists
+   */
   @Override
   public boolean categorieExists(String nom) {
     return categorieRepository.existsByNom(nom);

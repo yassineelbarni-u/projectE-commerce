@@ -17,12 +17,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/commandes")
 @AllArgsConstructor
+/**
+ * Customer order controller.
+ *
+ * <p>Provides two actions: show the current user's order history and convert the current session
+ * cart into a persisted order at checkout.
+ */
 public class OrderController {
 
   private final AccountService accountService;
   private final CommandeService commandeService;
   private final CartService cartService;
 
+  /**
+   * Displays all orders for the currently authenticated user.
+   *
+   * @param model MVC model that receives the orders list
+   * @param principal authenticated identity provided by Spring Security
+   * @return orders template, or login redirect when user is not authenticated
+   */
   @GetMapping
   public String listOrders(Model model, Principal principal) {
     if (principal == null) {
@@ -33,6 +46,15 @@ public class OrderController {
     return "public/commandes";
   }
 
+  /**
+   * Performs checkout for the logged-in user.
+   *
+   * <p>Reads items from the session cart, creates an order, then clears the cart when successful.
+   *
+   * @param session HTTP session containing the cart
+   * @param principal authenticated identity
+   * @return success redirect to order history, or login redirect when not authenticated
+   */
   @PostMapping("/checkout")
   public String checkout(HttpSession session, Principal principal) {
     if (principal == null) {

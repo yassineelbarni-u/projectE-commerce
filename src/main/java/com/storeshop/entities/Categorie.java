@@ -10,7 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/** Entity representing a product category in the store. */
+/**
+ * Product category used for grouping and filtering products in the storefront.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -20,8 +22,10 @@ public class Categorie {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  /** Products linked to this category through {@code Produit.categorie}. */
   @OneToMany(mappedBy = "categorie")
   private List<Produit> produits;
 
+  /** Category display name (must be unique for new inserts). */
   private String nom;
 }

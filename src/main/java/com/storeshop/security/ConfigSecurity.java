@@ -15,10 +15,26 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
+/**
+ * Main Spring Security configuration.
+ *
+ * <p>This class defines:
+ *
+ * <p>1) which URLs are public or protected,
+ *
+ * <p>2) how login success redirects are decided,
+ *
+ * <p>3) which security headers are added to responses.
+ */
 public class ConfigSecurity {
 
   private final UserDetailsServiceImpl userDetailsServiceImpl;
 
+  /**
+   * Builds a post-login redirect strategy.
+   *
+   * @return handler that sends admins to {@code /admin/dashboard} and other users to {@code /}
+   */
   @Bean
   public AuthenticationSuccessHandler authenticationSuccessHandler() {
     return (request, response, authentication) -> {
@@ -35,9 +51,12 @@ public class ConfigSecurity {
       HttpSecurity httpSecurity, AuthenticationSuccessHandler authenticationSuccessHandler)
       throws Exception {
 
+    // The chain below configures both browser protections and route-level authorization.
+
     return httpSecurity
       .headers(
         headers ->
+          // Browser-level hardening headers (CSP, referrer policy, frame denial, HSTS).
           headers
             .contentSecurityPolicy(
               csp ->
@@ -59,6 +78,7 @@ public class ConfigSecurity {
               hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(31536000)))
         .formLogin(
             form ->
+              // Use our custom login page and role-aware success redirect.
                 form.loginPage("/login").successHandler(authenticationSuccessHandler).permitAll())
         .userDetailsService(userDetailsServiceImpl)
         .logout(
@@ -70,6 +90,7 @@ public class ConfigSecurity {
                     .permitAll())
         .authorizeHttpRequests(
             auth ->
+             // Public storefront resources are open; admin area requires ADMIN role.
                auth.requestMatchers(
                         "/",
                         "/home",

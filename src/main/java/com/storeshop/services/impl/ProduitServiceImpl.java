@@ -17,11 +17,28 @@ public class ProduitServiceImpl implements ProduitService {
 
   private final ProduitRepository produitRepository;
 
+  /**
+   * Runs admin product search.
+   *
+   * @param search search text
+   * @param page zero-based page index
+   * @param size page size
+   * @return paginated products
+   */
   @Override
   public Page<Produit> searchProduits(String search, int page, int size) {
     return produitRepository.searchProduits(search, PageRequest.of(page, size));
   }
 
+  /**
+   * Runs storefront search with optional category filter.
+   *
+   * @param search search text (null is normalized to empty)
+   * @param categorieId optional category id
+   * @param page zero-based page index
+   * @param size page size
+   * @return paginated products
+   */
   @Override
   public Page<Produit> searchProduitsPublic(String search, Long categorieId, int page, int size) {
     String normalizedSearch = search == null ? "" : search.trim();
@@ -29,6 +46,13 @@ public class ProduitServiceImpl implements ProduitService {
         normalizedSearch, categorieId, PageRequest.of(page, size));
   }
 
+  /**
+   * Loads one product.
+   *
+   * @param id product id
+   * @return product
+   * @throws RuntimeException when not found
+   */
   @Override
   public Produit getProduitById(Long id) {
     return produitRepository
@@ -36,6 +60,13 @@ public class ProduitServiceImpl implements ProduitService {
         .orElseThrow(() -> new RuntimeException("Produit non trouve avec id: " + id));
   }
 
+  /**
+   * Validates and saves a product.
+   *
+   * @param produit product to persist
+   * @return saved product
+   * @throws RuntimeException when name is blank, price is negative, or stock is negative
+   */
   @Override
   public Produit saveProduit(Produit produit) {
     if (produit.getName() == null || produit.getName().trim().isEmpty()) {
@@ -53,6 +84,12 @@ public class ProduitServiceImpl implements ProduitService {
     return produitRepository.save(produit);
   }
 
+  /**
+   * Deletes one product.
+   *
+   * @param id product id
+   * @throws RuntimeException when id does not exist
+   */
   @Override
   public void deleteProduit(Long id) {
     if (!produitRepository.existsById(id)) {
@@ -61,6 +98,12 @@ public class ProduitServiceImpl implements ProduitService {
     produitRepository.deleteById(id);
   }
 
+  /**
+   * Checks whether a product exists.
+   *
+   * @param id product id
+   * @return true when found
+   */
   @Override
   public boolean produitExists(Long id) {
     return produitRepository.existsById(id);

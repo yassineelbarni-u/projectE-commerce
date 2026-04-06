@@ -7,11 +7,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * Repository for product persistence and custom search queries.
+ */
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
 
+    /**
+     * Finds a product by exact name.
+     *
+     * @param name exact product name
+     * @return matching product or null when not found
+     */
     Produit findByName(String name);
 
-  // Search in name, description and category name
+    /**
+     * Admin search query (case-insensitive) on name, description, and category name.
+     *
+     * @param search text filter
+     * @param pageable page request (page index, size, sort)
+     * @return paginated matching products
+     */
   @Query(
       "SELECT p FROM Produit p WHERE "
           + "LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')) OR "
@@ -19,6 +34,14 @@ public interface ProduitRepository extends JpaRepository<Produit, Long> {
           + "LOWER(p.categorie.nom) LIKE LOWER(CONCAT('%', :search, '%'))")
   Page<Produit> searchProduits(@Param("search") String search, Pageable pageable);
 
+    /**
+     * Public storefront search with optional category filter.
+     *
+     * @param search text filter; empty string disables text filtering
+     * @param categorieId optional category id; null means all categories
+     * @param pageable page request
+     * @return paginated matching products
+     */
   @Query(
       "SELECT p FROM Produit p LEFT JOIN p.categorie c WHERE "
           + "(:categorieId IS NULL OR c.id = :categorieId) AND ("

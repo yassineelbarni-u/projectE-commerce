@@ -29,11 +29,19 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/admin/produits")
 @RequiredArgsConstructor
+/**
+ * Admin web controller for product management.
+ *
+ * <p>This class handles list/search pages, create/update forms, and optional image upload. It is
+ * designed for server-rendered pages (template names and redirects), not JSON APIs.
+ */
 public class ProduitController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ProduitController.class);
+    /** MIME types accepted for uploaded product images. */
   private static final List<String> ALLOWED_CONTENT_TYPES =
       List.of("image/jpeg", "image/png", "image/gif", "image/webp");
+    /** Mapping from MIME type to file extension used when generating filenames. */
   private static final Map<String, String> CONTENT_TYPE_EXTENSIONS =
       Map.of(
           "image/jpeg", ".jpg",
@@ -41,15 +49,22 @@ public class ProduitController {
           "image/gif", ".gif",
           "image/webp", ".webp");
 
-  // Dependency injection
   private final ProduitService produitService;
   private final CategorieService categorieService;
 
-  // Path to store uploaded images
+  /** Directory where uploaded product images are saved. */
   @Value("${app.upload.dir:uploads}")
   private String uploadDir;
 
-  // Display the list of products with pagination and search
+  /**
+   * Displays the paginated products list for admins.
+   *
+   * @param model MVC model populated for the template
+   * @param page zero-based page index
+   * @param size number of rows per page
+   * @param search text filter applied to name/description/category
+   * @return products list template
+   */
   @GetMapping
   public String index(
       Model model,
@@ -65,6 +80,14 @@ public class ProduitController {
     return "produit/ListeProduit";
   }
 
+  /**
+   * Deletes a product then returns to the list while preserving current pagination/search context.
+   *
+   * @param id product id to delete
+   * @param page page index to restore in the redirect
+   * @param search active search text to restore in the redirect
+   * @return redirect URL to list page, with optional error message
+   */
   @GetMapping("/delete")
   public String deleteProduit(
       @RequestParam(name = "id") Long id,
@@ -83,7 +106,14 @@ public class ProduitController {
     }
   }
 
-  // Display the product edit form
+  /**
+   * Opens the product edit form.
+   *
+   * @param id product id
+   * @param search current search text (kept for navigation continuity)
+   * @param model MVC model containing the product and all categories
+   * @return edit product template
+   */
   @GetMapping("/edit")
   public String showEditForm(
       @RequestParam(name = "id") Long id,
@@ -99,7 +129,15 @@ public class ProduitController {
     return "produit/editProduit";
   }
 
-  // Method to save product modification
+  /**
+   * Persists product edits and optionally replaces its image.
+   *
+   * @param produit product data bound from form fields
+   * @param categorieId optional category id selected in the form
+   * @param search search text to keep in redirect URL
+   * @param imageFile optional uploaded image
+   * @return redirect URL to list page or back to edit page with error details
+   */
   @PostMapping("/edit")
   public String saveProduit(
       @ModelAttribute Produit produit,
@@ -107,15 +145,11 @@ public class ProduitController {
       @RequestParam(name = "search", defaultValue = "") String search,
       @RequestParam(name = "imageFile", required = false) MultipartFile imageFile) {
 
-    // Associate the category to the product
     if (categorieId != null) {
       Categorie categorie = categorieService.getCategorieById(categorieId);
-
-      // Associate the category to the product
       produit.setCategorie(categorie);
     }
 
-    // Handle image upload if a file is provided
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
         String fileName = saveImageFile(imageFile);
@@ -138,6 +172,13 @@ public class ProduitController {
     }
   }
 
+  /**
+   * Opens the add-product form.
+   *
+   * @param search current search text
+   * @param model MVC model containing an empty product and category choices
+   * @return add product template
+   */
   @GetMapping("/add")
   public String showAddForm(
       @RequestParam(name = "search", defaultValue = "") String search, Model model) {
@@ -148,6 +189,15 @@ public class ProduitController {
     return "produit/ajouterProduit";
   }
 
+  /**
+   * Creates a new product and optionally stores an uploaded image.
+   *
+   * @param produit product data bound from form fields
+   * @param categorieId optional category id selected in the form
+   * @param search search text to keep in redirect URL
+   * @param imageFile optional uploaded image
+   * @return redirect URL to list page or back to add page with error details
+   */
   @PostMapping("/add")
   public String addProduit(
       @ModelAttribute Produit produit,
@@ -155,13 +205,11 @@ public class ProduitController {
       @RequestParam(name = "search", defaultValue = "") String search,
       @RequestParam(name = "imageFile", required = false) MultipartFile imageFile) {
 
-    // Associate the category to the product
     if (categorieId != null) {
       Categorie categorie = categorieService.getCategorieById(categorieId);
       produit.setCategorie(categorie);
     }
 
-    // Handle image upload if a file is provided
     if (imageFile != null && !imageFile.isEmpty()) {
       try {
         String fileName = saveImageFile(imageFile);
@@ -184,27 +232,33 @@ public class ProduitController {
     return "redirect:/admin/dashboard";
   }
 
-  // Method to save uploaded image
+  /**
+   * Stores an uploaded image file on disk and returns the generated filename.
+   *
+   * <p>The method validates file type, creates the upload folder if missing, and writes the file
+   * with a random UUID filename to avoid collisions.
+   *
+   * @param file uploaded multipart file
+   * @return generated filename (without path), for example {@code f81d4fae-... .jpg}
+   * @throws IOException when the file type is unsupported or disk write fails
+   */
   private String saveImageFile(MultipartFile file) throws IOException {
     String contentType = file.getContentType();
     if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
       throw new IOException("Unsupported file type");
     }
 
-    // Create the directory if it does not exist
     Path uploadPath = Paths.get(uploadDir);
     if (!Files.exists(uploadPath)) {
       Files.createDirectories(uploadPath);
     }
 
-    // Generate a unique file name
     String extension = CONTENT_TYPE_EXTENSIONS.get(contentType);
     if (extension == null) {
       throw new IOException("Unsupported file type");
     }
     String fileName = UUID.randomUUID().toString() + extension;
 
-    // Save the file
     Path filePath = uploadPath.resolve(fileName);
     Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
