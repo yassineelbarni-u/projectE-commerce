@@ -40,8 +40,12 @@ public class OrderController {
     }
     Cart cart = cartService.getCart(session);
     User user = accountService.loadUserByUsername(principal.getName());
-    commandeService.createOrder(user, cart.getItems());
-    cartService.clear(session);
-    return "redirect:/commandes?success";
+    try {
+      commandeService.createOrder(user, cart.getItems());
+      cartService.clear(session);
+      return "redirect:/commandes?success";
+    } catch (RuntimeException e) {
+      return "redirect:/panier?error=" + e.getMessage();
+    }
   }
 }
