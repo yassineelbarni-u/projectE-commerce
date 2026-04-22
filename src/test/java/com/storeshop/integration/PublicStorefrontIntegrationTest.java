@@ -12,6 +12,10 @@ import com.storeshop.entities.Categorie;
 import com.storeshop.entities.Produit;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Type : Test d'Intégration
+ */
+@org.junit.jupiter.api.Tag("Integration")
 class PublicStorefrontIntegrationTest extends IntegrationTestBase {
 
   @Test

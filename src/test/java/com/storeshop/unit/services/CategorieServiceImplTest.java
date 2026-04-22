@@ -1,4 +1,4 @@
-package com.storeshop.services;
+package com.storeshop.unit.services;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,6 +33,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Service CategorieServiceImpl")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class CategorieServiceImplTest {
 
   @Mock private CategorieRepository categorieRepository;

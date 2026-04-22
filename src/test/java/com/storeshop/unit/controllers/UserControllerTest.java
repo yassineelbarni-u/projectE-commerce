@@ -1,12 +1,14 @@
-package com.storeshop.controllers;
+package com.storeshop.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.storeshop.controllers.UserController;
 import com.storeshop.entities.Role;
 import com.storeshop.entities.User;
 import com.storeshop.repositories.UserRepository;
@@ -29,6 +31,10 @@ import org.springframework.ui.Model;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Controller UserController")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class UserControllerTest {
 
   @Mock private AccountService accountService;
@@ -155,6 +161,49 @@ class UserControllerTest {
   }
 
   /**
+   * Teste la mise à jour avec mot de passe et rôle.
+   */
+  @Test
+  void testEditUser_SuccessWithPasswordAndRole() {
+    when(appUserRepository.findById("uuid-1")).thenReturn(Optional.of(user1));
+    when(appUserRepository.save(any(User.class))).thenReturn(user1);
+
+    String redirect =
+        userController.editUser("uuid-1", "adminUpdated", "newmail@gmail.com", "newPass", "CLIENT");
+
+    assertEquals("redirect:/admin/users?success=edit", redirect);
+    assertEquals("newPass", user1.getPassword());
+    assertEquals(Role.CLIENT, user1.getRole());
+  }
+
+  /**
+   * Teste la redirection d'erreur quand l'utilisateur à éditer est introuvable.
+   */
+  @Test
+  void testEditUser_NotFound() {
+    when(appUserRepository.findById("missing")).thenReturn(Optional.empty());
+
+    String redirect =
+        userController.editUser("missing", "adminUpdated", "newmail@gmail.com", null, "ADMIN");
+
+    assertTrue(redirect.startsWith("redirect:/admin/users?error="));
+  }
+
+  /**
+   * Teste la redirection d'erreur quand le formulaire d'édition cible un utilisateur absent.
+   */
+  @Test
+  void testShowEditUserForm_NotFound() {
+    when(appUserRepository.findById("missing")).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        org.junit.jupiter.api.Assertions.assertThrows(
+            RuntimeException.class, () -> userController.showEditUserForm("missing", model));
+
+    assertEquals("Utilisateur non trouvé", exception.getMessage());
+  }
+
+  /**
    * Teste la suppression d'un utilisateur.
    */
   @Test
@@ -163,5 +212,17 @@ class UserControllerTest {
     String redirect = userController.deleteUser("uuid-1");
     assertEquals("redirect:/admin/users?success=delete", redirect);
     verify(appUserRepository).deleteById("uuid-1");
+  }
+
+  /**
+   * Teste la redirection d'erreur quand la suppression échoue.
+   */
+  @Test
+  void testDeleteUser_Error() {
+    doThrow(new RuntimeException("constraint violation")).when(appUserRepository).deleteById("uuid-1");
+
+    String redirect = userController.deleteUser("uuid-1");
+
+    assertEquals("redirect:/admin/users?error=constraint violation", redirect);
   }
 }

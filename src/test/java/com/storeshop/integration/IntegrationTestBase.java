@@ -21,6 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc(print = MockMvcPrint.NONE)
 @ActiveProfiles("test")
+/**
+ * Type : Base Test d'Intégration
+ */
+@org.junit.jupiter.api.Tag("Integration")
 abstract class IntegrationTestBase {
 
   @Autowired protected MockMvc mockMvc;

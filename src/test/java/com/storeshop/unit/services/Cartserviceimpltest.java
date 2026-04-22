@@ -1,4 +1,4 @@
-package com.storeshop.services;
+package com.storeshop.unit.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -7,6 +7,7 @@ import com.storeshop.entities.Categorie;
 import com.storeshop.entities.Produit;
 import com.storeshop.models.Cart;
 import com.storeshop.models.CartLine;
+import com.storeshop.services.ProduitService;
 import com.storeshop.services.impl.CartServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
@@ -24,6 +25,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Service CartServiceImpl")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class CartServiceImplTest {
 
   @Mock private ProduitService produitService;

@@ -1,4 +1,4 @@
-package com.storeshop.services;
+package com.storeshop.unit.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import com.storeshop.services.AccountService;
 import com.storeshop.entities.Role;
 import com.storeshop.entities.User;
 import com.storeshop.services.impl.UserDetailsServiceImpl;
@@ -25,6 +26,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Service UserDetailsServiceImpl")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class UserDetailsServiceImplTest {
 
   @Mock private AccountService accountService;

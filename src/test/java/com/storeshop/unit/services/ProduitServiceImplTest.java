@@ -1,4 +1,4 @@
-package com.storeshop.services;
+package com.storeshop.unit.services;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,6 +37,10 @@ import org.springframework.data.domain.PageRequest;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Service ProduitServiceImpl")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class ProduitServiceImplTest {
 
   @Mock private ProduitRepository produitRepository;

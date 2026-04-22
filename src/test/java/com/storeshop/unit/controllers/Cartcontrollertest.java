@@ -1,4 +1,4 @@
-package com.storeshop.controllers;
+package com.storeshop.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.storeshop.controllers.CartController;
 import com.storeshop.entities.Categorie;
 import com.storeshop.entities.Produit;
 import com.storeshop.models.Cart;
@@ -31,6 +32,10 @@ import org.springframework.ui.Model;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Controller CartController")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class CartControllerTest {
 
   @Mock private CartService cartService;

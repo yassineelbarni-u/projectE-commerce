@@ -1,4 +1,4 @@
-package com.storeshop.controllers;
+package com.storeshop.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.storeshop.controllers.OrderController;
 import com.storeshop.entities.Commande;
 import com.storeshop.entities.Role;
 import com.storeshop.entities.User;
@@ -34,6 +35,10 @@ import org.springframework.ui.Model;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Controller OrderController")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class OrderControllerTest {
 
   @Mock private AccountService accountService;
@@ -126,6 +131,24 @@ class OrderControllerTest {
     String redirect = orderController.checkout(session, null);
     assertEquals("redirect:/login", redirect);
     verify(commandeService, never()).createOrder(any(), any());
+  }
+
+  /**
+   * Teste la redirection vers le panier en cas d'erreur métier au checkout.
+   */
+  @Test
+  @DisplayName("checkout - redirige vers le panier si la commande échoue")
+  void testCheckout_BusinessError() {
+    when(principal.getName()).thenReturn("client1");
+    when(cartService.getCart(session)).thenReturn(cart);
+    when(accountService.loadUserByUsername("client1")).thenReturn(user);
+  when(commandeService.createOrder(eq(user), org.mockito.ArgumentMatchers.<Map<Long, Integer>>any()))
+        .thenThrow(new RuntimeException("Stock insuffisant pour: Smartphone"));
+
+    String redirect = orderController.checkout(session, principal);
+
+    assertEquals("redirect:/panier?error=Stock insuffisant pour: Smartphone", redirect);
+    verify(cartService, never()).clear(session);
   }
 
   /**

@@ -1,4 +1,4 @@
-package com.storeshop.services;
+package com.storeshop.unit.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import com.storeshop.entities.*;
 import com.storeshop.repositories.CommandeRepository;
+import com.storeshop.services.ProduitService;
 import com.storeshop.services.impl.CommandeServiceImpl;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Service CommandeServiceImpl")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class CommandeServiceImplTest {
 
   @Mock private CommandeRepository commandeRepository;

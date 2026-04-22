@@ -1,4 +1,4 @@
-package com.storeshop.controllers;
+package com.storeshop.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.storeshop.controllers.ProduitController;
 import com.storeshop.entities.Categorie;
 import com.storeshop.entities.Produit;
 import com.storeshop.services.CategorieService;
@@ -38,6 +39,10 @@ import org.springframework.ui.Model;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Controller Produit")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class ProduitControllerTest {
 
   @Mock private ProduitService produitService;

@@ -23,6 +23,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
+/**
+ * Type : Test d'Intégration
+ */
+@org.junit.jupiter.api.Tag("Integration")
 class OrderCheckoutIntegrationTest extends IntegrationTestBase {
 
   @Test

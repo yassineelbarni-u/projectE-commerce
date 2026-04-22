@@ -10,6 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.storeshop.entities.Role;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Type : Test d'Intégration
+ */
+@org.junit.jupiter.api.Tag("Integration")
 class SecurityIntegrationTest extends IntegrationTestBase {
 
   @Test

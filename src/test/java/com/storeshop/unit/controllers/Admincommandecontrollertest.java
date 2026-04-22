@@ -1,10 +1,11 @@
-package com.storeshop.controllers;
+package com.storeshop.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.storeshop.controllers.AdminCommandeController;
 import com.storeshop.entities.Commande;
 import com.storeshop.services.CommandeService;
 import java.util.List;
@@ -25,6 +26,10 @@ import org.springframework.ui.Model;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Controller AdminCommandeController")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class AdminCommandeControllerTest {
 
   @Mock private CommandeService commandeService;

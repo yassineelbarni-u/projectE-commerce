@@ -1,10 +1,11 @@
-package com.storeshop.controllers;
+package com.storeshop.unit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.storeshop.controllers.LoginController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Controller LoginController")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class LoginControllerTest {
 
   @InjectMocks private LoginController loginController;

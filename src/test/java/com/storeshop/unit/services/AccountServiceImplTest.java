@@ -1,4 +1,4 @@
-package com.storeshop.services;
+package com.storeshop.unit.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,6 +28,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests du Service AccountServiceImpl")
+/**
+ * Type : Test Unitaire
+ */
+@org.junit.jupiter.api.Tag("Unitaire")
 class AccountServiceImplTest {
 
   @Mock private UserRepository appUserRepository;
