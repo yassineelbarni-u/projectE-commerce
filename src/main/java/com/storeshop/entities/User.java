@@ -3,6 +3,8 @@ package com.storeshop.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,4 +36,8 @@ public class User {
 
   /** Authorization role controlling access to protected routes. */
   private Role role;
+
+  /** Orders placed by this user. */
+  @OneToMany(mappedBy = "user", cascade = jakarta.persistence.CascadeType.REMOVE, orphanRemoval = true)
+  private List<Commande> commandes;
 }

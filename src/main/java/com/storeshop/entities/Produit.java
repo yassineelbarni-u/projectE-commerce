@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,4 +43,19 @@ public class Produit {
 
   /** Available stock quantity. Must be non-negative. */
   private int stock;
+
+  /** Order items linked to this product. */
+  @OneToMany(mappedBy = "produit", cascade = jakarta.persistence.CascadeType.REMOVE, orphanRemoval = true)
+  private List<CommandeItem> commandeItems;
+
+    // Constructeur utilisé pour les tests
+    public Produit(Long id, Categorie categorie, String name, String imageUrl, String description, double price, int stock) {
+      this.id = id;
+      this.categorie = categorie;
+      this.name = name;
+      this.imageUrl = imageUrl;
+      this.description = description;
+      this.price = price;
+      this.stock = stock;
+    }
 }
